@@ -7,11 +7,12 @@
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "Launch Program",
+            "name": "Launch Server",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/a.js",
+            "program": "index.js",
+            "cwd": "${workspaceFolder}/server",
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
             ]

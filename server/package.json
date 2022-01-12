@@ -1,0 +1,17 @@
+{
+  "name": "toggl",
+  "version": "0.0.1",
+  "description": "",
+  "main": "a.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mátyás Budavári <budavariam@gmail.com> (https://budavariam.github.io/)",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.24.0",
+    "dotenv": "^11.0.0",
+    "moment": "^2.29.1",
+    "moment-duration-format": "^2.3.2"
+  }
+}

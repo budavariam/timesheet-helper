@@ -11,7 +11,7 @@ import { Project } from '../types';
 import { formatDuration } from '../util/format';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.body}:last-child`]: {
+  [`&.${tableCellClasses.head}:last-child, &.${tableCellClasses.body}:last-child`]: {
     backgroundColor: theme.palette.grey[100],
   },
 }));
@@ -29,15 +29,14 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export function ProjectGrid(props: any) {
   const projects: Project[] = props.projects;
   const totals: number[] = props.totals;
-  const dates: string[] = props.totals.map((_: any) => "-")
-  dates[dates.length -1] = "Totals"
+  const headers: string[] = props.headers
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <StyledTableCell>Name</StyledTableCell>
-            {dates.map((day, i) => <TableCell key={i} align="right">{day}</TableCell>)}
+            {headers.map((day, i) => <StyledTableCell key={i} align="right">{day}</StyledTableCell>)}
           </TableRow>
         </TableHead>
         <TableBody>

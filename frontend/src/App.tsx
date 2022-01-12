@@ -9,7 +9,7 @@ function App() {
       {error && 'Error!'}
       {loading && 'Loading...'}
       {
-        data?.data && <ProjectGrid projects={data.data} totals={data.weekTotals}></ProjectGrid>
+        data?.data && <ProjectGrid projects={data.data} totals={data.weekTotals} headers={data.headers || []}></ProjectGrid>
       }
     </>
   )

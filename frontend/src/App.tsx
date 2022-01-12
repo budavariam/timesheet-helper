@@ -3,7 +3,7 @@ import './App.css';
 import { ProjectGrid } from "./project/projectGrid";
 
 function App() {
-  const { loading, error, data = [] } = useFetch('/project', {}, [])
+  const { loading, error, data = [] } = useFetch('/project/?from=2021-12-27&to=2022-01-05', {}, [])
   return (
     <>
       {error && 'Error!'}

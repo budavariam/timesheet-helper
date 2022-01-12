@@ -1,1 +1,1 @@
-export type Project = { uuid: string, client: string, project: string, hexColor: string, totals: string[] }
+export type Project = { uuid: string, client: string, project: string, hexColor: string, totals: number[] }

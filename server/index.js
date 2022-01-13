@@ -5,8 +5,8 @@ const port = 8080
 
 app.get("/project", (req, res) => {
     console.log("project", req.query)
-    const { from: dateFrom, to: dateTo } = req.query
-    getDataByProject(dateFrom, dateTo)
+    const { from: dateFrom } = req.query
+    getDataByProject(dateFrom)
         .then((data) => {
             res.send(data)
         })

@@ -27,8 +27,10 @@ const enumerateDaysBetweenDates = function (startDate, endDate) {
 };
 
 
-const getDataByProject = (dateFrom, dateTo) => {
+const getDataByProject = (dateFrom) => {
+    const dateTo = moment(dateFrom).add(7, 'days').format("YYYY-MM-DD")
     const url = `https://api.track.toggl.com/reports/api/v2/weekly?workspace_id=${WORKSPACE_ID}&since=${dateFrom}&until=${dateTo}&user_agent=api_test`
+    console.log(url)
     return axios.get(url, {
         auth: {
             username: API_TOKEN,

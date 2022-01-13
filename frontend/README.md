@@ -48,6 +48,7 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 ## Modules
 
 - [useFetch](https://use-http.com/#/?id=basic-usage-auto-managed-state)
-- [memento]()
-- [axios]()
+- [moment duration format](https://www.npmjs.com/package/moment-duration-format)
+- [moment](https://www.npmjs.com/package/moment)
+- [axios](https://www.npmjs.com/package/axios)
 - [CRA](https://create-react-app.dev/docs/adding-typescript/)

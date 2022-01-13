@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useCallback } from 'react';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -26,17 +26,23 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
+const filterByWeekLength = (weekLength: number) => (e: any, i: number) => {
+  return !(weekLength === 5 && (i === 5 || i === 6))
+}
+
 export function ProjectGrid(props: any) {
   const projects: Project[] = props.projects;
   const totals: number[] = props.totals;
   const headers: string[] = props.headers
+  const weekLength: number = props.weekLength
+  const weekFilter = useCallback(filterByWeekLength(weekLength), [weekLength])
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <Table sx={{ minWidth: 650 }} size="small" aria-label="simple table">
         <TableHead>
           <TableRow>
             <StyledTableCell>Name</StyledTableCell>
-            {headers.map((day, i) => <StyledTableCell key={i} align="right">{day}</StyledTableCell>)}
+            {headers.map((day, i) => <StyledTableCell key={i} align="right">{day}</StyledTableCell>).filter(weekFilter)}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -48,12 +54,12 @@ export function ProjectGrid(props: any) {
               <TableCell component="th" scope="row">
                 <span style={{ color: project.hexColor }}>{project.client} {project.project}</span>
               </TableCell>
-              {project.totals.map((num, i) => <StyledTableCell key={i} align="right">{formatDuration(num)}</StyledTableCell>)}
+              {project.totals.map((num, i) => <StyledTableCell key={i} align="right">{formatDuration(num)}</StyledTableCell>).filter(weekFilter)}
             </TableRow>
           ))}
           <StyledTableRow>
             <StyledTableCell>Totals</StyledTableCell>
-            {totals.map((num, i) => <StyledTableCell key={i} align="right">{formatDuration(num)}</StyledTableCell>)}
+            {totals.map((num, i) => <StyledTableCell key={i} align="right">{formatDuration(num)}</StyledTableCell>).filter(weekFilter)}
           </StyledTableRow>
         </TableBody>
       </Table>

@@ -22,6 +22,7 @@
     "react-scripts": "5.0.0",
     "typescript": "^4.5.4",
     "use-http": "^1.0.26",
+    "uuid": "^8.3.2",
     "web-vitals": "^2.1.3"
   },
   "scripts": {
@@ -49,6 +50,7 @@
     ]
   },
   "devDependencies": {
-    "@types/moment-duration-format": "^2.2.3"
+    "@types/moment-duration-format": "^2.2.3",
+    "@types/uuid": "^8.3.4"
   }
 }

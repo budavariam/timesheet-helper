@@ -15,11 +15,10 @@ export const enumerateDaysBetweenDates = function (startDate: any, endDate: any)
         i++
     }
     dates.push("Totals")
-    console.log(dates)
     return dates
 };
 
-export const enumeratePastMondays = function (startDate: any, count: number) {
+export const enumeratePastMondays = function (startDate: any, count: number = 10) {
     const now = moment(startDate).clone().day(1)
     const dates = []
     let i = 0
@@ -29,6 +28,5 @@ export const enumeratePastMondays = function (startDate: any, count: number) {
         now.add(-7, 'days')
         i++
     }
-    console.log(dates)
     return dates
 };

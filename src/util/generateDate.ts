@@ -31,7 +31,13 @@ export const enumeratePastMondays = function (startDate: any, count: number = 10
     return dates
 };
 
-export const roundToNearestNMinutes = (startMS: number, roundTo: number) => {
+export const roundToNearestNMinutes = (roundTo: number) => (startMS: number) => {
+    if (!startMS) {
+        return 0
+    }
+    if (!roundTo) {
+        return startMS
+    }
     const start = moment(startMS)
     let remainder = roundTo - (start.minute() + start.second() / 60) % roundTo;
 

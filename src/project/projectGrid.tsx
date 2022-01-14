@@ -33,8 +33,7 @@ function Duration(props: any) {
   if (!num) {
     return null
   }
-  const cnum = roundToNearestNMinutes(num, 30)
-  return <>{formatDuration(cnum).split(":").map((e, i) => <span key={i} className={`duration ${e === "00" ? "irrelevant" : ""}`}>{e}</span>)}</>
+  return <>{formatDuration(num).split(":").map((e, i) => <span key={i} className={`duration ${e === "00" ? "irrelevant" : ""}`}>{e}</span>)}</>
 }
 
 

@@ -1,5 +1,5 @@
 import { Project, ProjectData, ProjectResponse } from "../types";
-import { enumerateDaysBetweenDates } from "../util/generateDate"
+import { enumerateDaysBetweenDates, roundToNearestNMinutes } from "../util/generateDate"
 import { v4 as uuidv4 } from "uuid"
 import moment from 'moment';
 
@@ -28,14 +28,15 @@ const filterByWeekLength = (weekLength: number) => (e: any, i: number) => {
     return !(weekLength === 5 && (i === 5 || i === 6))
 }
 
-export function filterProjectDataByWeekLength(project: ProjectData, weekLength: number): ProjectData {
+export function manipulateData(project: ProjectData, weekLength: number, rounding: number): ProjectData {
     const filterFn = filterByWeekLength(weekLength)
+    const roundFn = roundToNearestNMinutes(rounding)
     const newProjects = [] as Project[]
 
     project.projects.forEach((project) => {
         const proj = {
             ...project,
-            totals: project.totals.filter(filterFn)
+            totals: project.totals.filter(filterFn).map(roundFn)
         }
         newProjects.push(proj)
     })
@@ -43,6 +44,6 @@ export function filterProjectDataByWeekLength(project: ProjectData, weekLength: 
     return {
         projects: newProjects,
         headers: project.headers.filter(filterFn),
-        totals: project.totals.filter(filterFn),
+        totals: project.totals.filter(filterFn).map(roundFn),
     }
 }

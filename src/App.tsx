@@ -11,7 +11,7 @@ import { useProjectFetch } from './api/toggl';
 import { Card, Container, Grid, TextField } from '@mui/material';
 import { useLocalStorage } from './util/useLocalStorage';
 import { ProjectData } from './types';
-import { filterProjectDataByWeekLength, processProjectData } from './util/projectData';
+import { manipulateData, processProjectData } from './util/projectData';
 import { DISPATCH_ACTION } from './util/const';
 
 function reducer(state: any, action: { type: string, value: any }) {
@@ -25,7 +25,7 @@ function reducer(state: any, action: { type: string, value: any }) {
       const dateFrom = state.start
       const dateTo = moment(state.start).add(7, 'days').format("YYYY-MM-DD")
       const originalProjectData = processProjectData(action.value, dateFrom, dateTo)
-      const projectData = filterProjectDataByWeekLength(originalProjectData, state.weekLength)
+      const projectData = manipulateData(originalProjectData, state.weekLength, state.rounding)
       return { ...state, projectData, originalProjectData }
     }
     case DISPATCH_ACTION.WEEK_LENGTH_CHANGED: {
@@ -33,11 +33,19 @@ function reducer(state: any, action: { type: string, value: any }) {
       return {
         ...state,
         weekLength,
-        projectData: filterProjectDataByWeekLength(state.originalProjectData, weekLength),
+        projectData: manipulateData(state.originalProjectData, weekLength, state.rounding),
       }
     }
     case DISPATCH_ACTION.START_CHANGED: {
       return { ...state, start: (action.value as string) }
+    }
+    case DISPATCH_ACTION.ROUNDING_CHANGED: {
+      const rounding = (action.value as number)
+      return {
+        ...state,
+        rounding,
+        projectData: manipulateData(state.originalProjectData, state.weekLength, rounding),
+      }
     }
     case DISPATCH_ACTION.ROUNDING: {
       console.log("rounding UNIMPLEMENTED")
@@ -56,6 +64,7 @@ function App() {
   const [state, dispatch] = useReducer(reducer, {
     start: moment().day(1).format("YYYY-MM-DD"),
     weekLength: 5,
+    rounding: 30,
     projectData: {
       projects: [],
       totals: [],
@@ -101,6 +110,22 @@ function App() {
                 >
                   <MenuItem value={7}>Whole Week</MenuItem>
                   <MenuItem value={5}>Workdays</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} md={2}>
+              <FormControl size="small" fullWidth margin="dense">
+                <InputLabel id="rounding-lable">Round</InputLabel>
+                <Select
+                  labelId="rounding-label"
+                  id="rounding"
+                  value={state.rounding}
+                  label="Rounding"
+                  onChange={(e) => { dispatch({ type: DISPATCH_ACTION.ROUNDING_CHANGED, value: parseInt(`${e.target.value}`, 10) }) }}
+                >
+                  <MenuItem value={0}>No Rounding</MenuItem>
+                  <MenuItem value={30}>30 minute</MenuItem>
+                  <MenuItem value={60}>Hour</MenuItem>
                 </Select>
               </FormControl>
             </Grid>

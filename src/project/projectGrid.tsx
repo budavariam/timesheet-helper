@@ -45,7 +45,7 @@ export function ProjectGrid(props: any) {
         <TableHead>
           <TableRow>
             <StyledTableCell>Name</StyledTableCell>
-            {projectData.headers.map((day, i) => <StyledTableCell key={i} align="right">{day}</StyledTableCell>)}
+            {projectData.headers.map((day, i) => <StyledTableCell key={i} align="center">{day}</StyledTableCell>)}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -57,12 +57,12 @@ export function ProjectGrid(props: any) {
               <TableCell component="th" scope="row">
                 <span style={{ color: project.hexColor }}>{project.client} {project.project}</span>
               </TableCell>
-              {project.totals.map((num, i) => <StyledTableCell key={i} align="right"><Duration value={num} /></StyledTableCell>)}
+              {project.totals.map((num, i) => <StyledTableCell key={i} align="center"><Duration value={num} /></StyledTableCell>)}
             </TableRow>
           ))}
           <StyledTableRow>
             <StyledTableCell>Totals</StyledTableCell>
-            {projectData.totals.map((num, i) => <StyledTableCell key={i} align="right"><Duration value={num} /></StyledTableCell>)}
+            {projectData.totals.map((num, i) => <StyledTableCell key={i} align="center"><Duration value={num} /></StyledTableCell>)}
           </StyledTableRow>
         </TableBody>
       </Table>

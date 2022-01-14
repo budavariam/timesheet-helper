@@ -32,18 +32,26 @@ export function manipulateData(project: ProjectData, weekLength: number, roundin
     const filterFn = filterByWeekLength(weekLength)
     const roundFn = roundToNearestNMinutes(rounding)
     const newProjects = [] as Project[]
+    const dailyTotals = Array(7).fill(0)
 
     project.projects.forEach((project) => {
         const proj = {
             ...project,
             totals: project.totals.filter(filterFn).map(roundFn)
         }
+        let projTotal = 0
+        proj.totals.slice(0, -1).forEach((item, i) => {
+            projTotal += item
+            dailyTotals[i] += item
+        })
+        proj.totals[proj.totals.length - 1] = projTotal
+
         newProjects.push(proj)
     })
-
+    dailyTotals.push(dailyTotals.reduce((acc, curr) => acc + curr, 0))
     return {
         projects: newProjects,
         headers: project.headers.filter(filterFn),
-        totals: project.totals.filter(filterFn).map(roundFn),
+        totals: dailyTotals.filter(filterFn).map(roundFn),
     }
 }

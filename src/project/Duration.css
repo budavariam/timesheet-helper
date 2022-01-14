@@ -1,0 +1,7 @@
+.duration:first-of-type::after {
+    content: ":";
+}
+
+.irrelevant {
+    color: gray;
+}

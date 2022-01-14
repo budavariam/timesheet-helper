@@ -5,5 +5,5 @@ momentDurationFormatSetup(moment);
 export const formatDuration = (msec: number) => msec
     ? moment
         .duration(msec, 'milliseconds')
-        .format("hh:mm:ss", { stopTrim: "h" })
-    : msec
+        .format("hh:mm", { stopTrim: "h" })
+    : ""

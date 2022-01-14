@@ -30,3 +30,16 @@ export const enumeratePastMondays = function (startDate: any, count: number = 10
     }
     return dates
 };
+
+export const roundToNearestNMinutes = (startMS: number, roundTo: number) => {
+    const start = moment(startMS)
+    let remainder = roundTo - (start.minute() + start.second() / 60) % roundTo;
+
+    remainder = (remainder > roundTo / 2)
+        ? -roundTo + remainder
+        : remainder
+    const rounded = +start.add(remainder, "minutes").seconds(0)
+    return rounded 
+        ? rounded 
+        : 1 // show a minimum value 1ms
+}

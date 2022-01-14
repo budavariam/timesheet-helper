@@ -1,27 +1,71 @@
-import useFetch from 'use-http';
 import './App.css';
 import { ProjectGrid } from "./project/projectGrid";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { useState } from 'react';
+import { useReducer } from 'react';
 import moment from 'moment';
 import { enumeratePastMondays } from './util/generateDate';
 import { useProjectFetch } from './api/toggl';
 import { Card, Container, FormGroup, Grid, TextField } from '@mui/material';
 import { useLocalStorage } from './util/useLocalStorage';
-import { Box } from '@mui/system';
+import { ProjectData } from './types';
+import { processProjectData } from './util/projectData';
+
+function reducer(state: any, action: { type: string, value: any }) {
+  if (!action || !action.type) {
+    console.warn("Empty action")
+    return state
+  }
+  console.log("X", state, action)
+  switch (action.type) {
+    case DISPATCH_ACTION.PROJECT_LOADED: {
+      const dateFrom = state.start 
+      const dateTo = moment(state.start).add(7, 'days').format("YYYY-MM-DD")
+      const projectData = processProjectData(action.value, dateFrom, dateTo)
+      return {...state, projectData }
+    }
+    case DISPATCH_ACTION.WEEK_LENGTH_CHANGED: {
+      return { ...state, weekLength: (action.value as number) }
+    }
+    case DISPATCH_ACTION.START_CHANGED: {
+      return { ...state, start: (action.value as string) }
+    }
+    case DISPATCH_ACTION.ROUNDING: {
+      console.log("rounding UNIMPLEMENTED")
+      return state
+    }
+    default: {
+      console.warn("Unknown action", action)
+    }
+  }
+  console.log(action)
+  return state
+}
+
+export const DISPATCH_ACTION = {
+  "PROJECT_LOADED": "PROJECT_LOADED",
+  "WEEK_LENGTH_CHANGED": "WEEK_LENGTH_CHANGED",
+  "START_CHANGED": "START_CHANGED",
+  "ROUNDING": "ROUNDING",
+}
+
 
 function App() {
-  const [state, setState] = useState(() => ({
+  const [state, dispatch] = useReducer(reducer, {
     start: moment().day(1).format("YYYY-MM-DD"),
     weekLength: 5,
-  }))
+    projectData: {
+      projects: [],
+      totals: [],
+      headers: [],
+    } as ProjectData
+  })
 
   const [localStorageKey, setKey] = useLocalStorage("key", "");
   const [localStorageWid, setWid] = useLocalStorage("wid", "");
-  const [loading, error, project] = useProjectFetch(state.start, localStorageKey, localStorageWid)
+  const [loading, error, project] = useProjectFetch(state.start, localStorageKey, localStorageWid, dispatch)
 
   const dateSelection = enumeratePastMondays(moment(), 10)
   return (
@@ -29,7 +73,7 @@ function App() {
       {/* {error && 'Error!'}
       {loading && 'Loading...'} */}
       <Container fixed>
-        <Card elevation={1} style={{marginBottom: 15, marginTop: 15}}>
+        <Card elevation={1} style={{ marginBottom: 15, marginTop: 15 }}>
           <Grid container>
             <Grid item xs={12} md={2}>
               <FormControl size="small" fullWidth margin="dense">
@@ -39,7 +83,7 @@ function App() {
                   id="demo-simple-select"
                   value={state.start}
                   label="Start"
-                  onChange={(e) => { setState((prev) => ({ ...prev, start: e.target.value })) }}
+                  onChange={(e) => { dispatch({ type: DISPATCH_ACTION.START_CHANGED, value: e.target.value }) }}
                 >
                   {dateSelection.map((val) => <MenuItem key={val} value={val}>{val}</MenuItem>)}
                 </Select>
@@ -53,7 +97,7 @@ function App() {
                   id="week-length"
                   value={state.weekLength}
                   label="Week Length"
-                  onChange={(e) => { setState((prev) => ({ ...prev, weekLength: parseInt(`${e.target.value}`, 10) })) }}
+                  onChange={(e) => { dispatch({ type: DISPATCH_ACTION.WEEK_LENGTH_CHANGED, value: parseInt(`${e.target.value}`, 10) }) }}
                 >
                   <MenuItem value={7}>Whole Week</MenuItem>
                   <MenuItem value={5}>Workdays</MenuItem>
@@ -91,7 +135,7 @@ function App() {
           </Grid>
         </Card>
         {
-          project?.data && <ProjectGrid weekLength={state.weekLength} projects={project.data} totals={project.weekTotals} headers={project.headers || []}></ProjectGrid>
+          state?.projectData && <ProjectGrid dispatch={dispatch} weekLength={state.weekLength} projectData={state.projectData}></ProjectGrid>
         }
       </Container>
     </>

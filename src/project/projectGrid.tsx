@@ -7,7 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Project } from '../types';
+import { Project, ProjectData } from '../types';
 import { formatDuration } from '../util/format';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -31,9 +31,7 @@ const filterByWeekLength = (weekLength: number) => (e: any, i: number) => {
 }
 
 export function ProjectGrid(props: any) {
-  const projects: Project[] = props.projects;
-  const totals: number[] = props.totals;
-  const headers: string[] = props.headers
+  const projectData: ProjectData = props.projectData
   const weekLength: number = props.weekLength
   const weekFilter = useCallback(filterByWeekLength(weekLength), [weekLength])
   return (
@@ -42,11 +40,11 @@ export function ProjectGrid(props: any) {
         <TableHead>
           <TableRow>
             <StyledTableCell>Name</StyledTableCell>
-            {headers.map((day, i) => <StyledTableCell key={i} align="right">{day}</StyledTableCell>).filter(weekFilter)}
+            {projectData.headers.map((day, i) => <StyledTableCell key={i} align="right">{day}</StyledTableCell>).filter(weekFilter)}
           </TableRow>
         </TableHead>
         <TableBody>
-          {projects.map((project: Project) => (
+          {projectData.projects.map((project: Project) => (
             <TableRow
               key={project.uuid}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -59,7 +57,7 @@ export function ProjectGrid(props: any) {
           ))}
           <StyledTableRow>
             <StyledTableCell>Totals</StyledTableCell>
-            {totals.map((num, i) => <StyledTableCell key={i} align="right">{formatDuration(num)}</StyledTableCell>).filter(weekFilter)}
+            {projectData.totals.map((num, i) => <StyledTableCell key={i} align="right">{formatDuration(num)}</StyledTableCell>).filter(weekFilter)}
           </StyledTableRow>
         </TableBody>
       </Table>

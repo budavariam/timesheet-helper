@@ -12,3 +12,5 @@
 - [ ] cache api calls
 - [ ] Show day number
 - [ ] Color by worklifebalance
+- [ ] error handling
+- [ ] loading handling

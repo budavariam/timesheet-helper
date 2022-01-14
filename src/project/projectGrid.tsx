@@ -26,21 +26,15 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const filterByWeekLength = (weekLength: number) => (e: any, i: number) => {
-  return !(weekLength === 5 && (i === 5 || i === 6))
-}
-
 export function ProjectGrid(props: any) {
   const projectData: ProjectData = props.projectData
-  const weekLength: number = props.weekLength
-  const weekFilter = useCallback(filterByWeekLength(weekLength), [weekLength])
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="simple table">
         <TableHead>
           <TableRow>
             <StyledTableCell>Name</StyledTableCell>
-            {projectData.headers.map((day, i) => <StyledTableCell key={i} align="right">{day}</StyledTableCell>).filter(weekFilter)}
+            {projectData.headers.map((day, i) => <StyledTableCell key={i} align="right">{day}</StyledTableCell>)}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -52,12 +46,12 @@ export function ProjectGrid(props: any) {
               <TableCell component="th" scope="row">
                 <span style={{ color: project.hexColor }}>{project.client} {project.project}</span>
               </TableCell>
-              {project.totals.map((num, i) => <StyledTableCell key={i} align="right">{formatDuration(num)}</StyledTableCell>).filter(weekFilter)}
+              {project.totals.map((num, i) => <StyledTableCell key={i} align="right">{formatDuration(num)}</StyledTableCell>)}
             </TableRow>
           ))}
           <StyledTableRow>
             <StyledTableCell>Totals</StyledTableCell>
-            {projectData.totals.map((num, i) => <StyledTableCell key={i} align="right">{formatDuration(num)}</StyledTableCell>).filter(weekFilter)}
+            {projectData.totals.map((num, i) => <StyledTableCell key={i} align="right">{formatDuration(num)}</StyledTableCell>)}
           </StyledTableRow>
         </TableBody>
       </Table>

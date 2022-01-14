@@ -1,17 +1,18 @@
 import './App.css';
+import { useReducer } from 'react';
+import moment from 'moment';
 import { ProjectGrid } from "./project/projectGrid";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { useReducer } from 'react';
-import moment from 'moment';
 import { enumeratePastMondays } from './util/generateDate';
 import { useProjectFetch } from './api/toggl';
-import { Card, Container, FormGroup, Grid, TextField } from '@mui/material';
+import { Card, Container, Grid, TextField } from '@mui/material';
 import { useLocalStorage } from './util/useLocalStorage';
 import { ProjectData } from './types';
-import { processProjectData } from './util/projectData';
+import { filterProjectDataByWeekLength, processProjectData } from './util/projectData';
+import { DISPATCH_ACTION } from './util/const';
 
 function reducer(state: any, action: { type: string, value: any }) {
   if (!action || !action.type) {
@@ -21,13 +22,19 @@ function reducer(state: any, action: { type: string, value: any }) {
   console.log("X", state, action)
   switch (action.type) {
     case DISPATCH_ACTION.PROJECT_LOADED: {
-      const dateFrom = state.start 
+      const dateFrom = state.start
       const dateTo = moment(state.start).add(7, 'days').format("YYYY-MM-DD")
-      const projectData = processProjectData(action.value, dateFrom, dateTo)
-      return {...state, projectData }
+      const originalProjectData = processProjectData(action.value, dateFrom, dateTo)
+      const projectData = filterProjectDataByWeekLength(originalProjectData, state.weekLength)
+      return { ...state, projectData, originalProjectData }
     }
     case DISPATCH_ACTION.WEEK_LENGTH_CHANGED: {
-      return { ...state, weekLength: (action.value as number) }
+      const weekLength = (action.value as number)
+      return {
+        ...state,
+        weekLength,
+        projectData: filterProjectDataByWeekLength(state.originalProjectData, weekLength),
+      }
     }
     case DISPATCH_ACTION.START_CHANGED: {
       return { ...state, start: (action.value as string) }
@@ -42,13 +49,6 @@ function reducer(state: any, action: { type: string, value: any }) {
   }
   console.log(action)
   return state
-}
-
-export const DISPATCH_ACTION = {
-  "PROJECT_LOADED": "PROJECT_LOADED",
-  "WEEK_LENGTH_CHANGED": "WEEK_LENGTH_CHANGED",
-  "START_CHANGED": "START_CHANGED",
-  "ROUNDING": "ROUNDING",
 }
 
 

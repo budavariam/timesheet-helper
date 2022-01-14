@@ -1,7 +1,7 @@
 import moment from "moment"
 import { useEffect } from "react"
 import useFetch from "use-http"
-import { DISPATCH_ACTION } from "../App"
+import { DISPATCH_ACTION } from "../util/const"
 import { ProjectResponse } from "../types"
 
 export const useProjectFetch = (dateFrom: string, apiToken: string, workspaceId: string, dispatch: Function): [loading: boolean, error: Error | undefined, project: ProjectResponse] => {

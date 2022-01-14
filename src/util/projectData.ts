@@ -23,3 +23,26 @@ export function processProjectData(response: any, dateFrom: string, dateTo: stri
         totals,
     }
 }
+
+const filterByWeekLength = (weekLength: number) => (e: any, i: number) => {
+    return !(weekLength === 5 && (i === 5 || i === 6))
+}
+
+export function filterProjectDataByWeekLength(project: ProjectData, weekLength: number): ProjectData {
+    const filterFn = filterByWeekLength(weekLength)
+    const newProjects = [] as Project[]
+
+    project.projects.forEach((project) => {
+        const proj = {
+            ...project,
+            totals: project.totals.filter(filterFn)
+        }
+        newProjects.push(proj)
+    })
+
+    return {
+        projects: newProjects,
+        headers: project.headers.filter(filterFn),
+        totals: project.totals.filter(filterFn),
+    }
+}

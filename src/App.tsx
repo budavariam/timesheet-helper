@@ -12,9 +12,9 @@ import { Card, Container, Grid, TextField } from '@mui/material';
 import { useLocalStorage } from './util/useLocalStorage';
 import { ProjectData } from './types';
 import { manipulateData, processProjectData } from './util/projectData';
-import { DISPATCH_ACTION } from './util/const';
+import { DEFAULT_ADJUSTMENT, DISPATCH_ACTION } from './util/const';
 
-function reducer(state: any, action: { type: string, value: any }) {
+function reducer(state: any, action: { type: string, value: any, projectID?: string, columnIndex?: number }) {
   if (!action || !action.type) {
     console.warn("Empty action")
     return state
@@ -25,15 +25,15 @@ function reducer(state: any, action: { type: string, value: any }) {
       const dateFrom = state.start
       const dateTo = moment(state.start).add(7, 'days').format("YYYY-MM-DD")
       const originalProjectData = processProjectData(action.value, dateFrom, dateTo)
-      const projectData = manipulateData(originalProjectData, state.weekLength, state.rounding)
-      return { ...state, projectData, originalProjectData }
+      const projectData = manipulateData(originalProjectData, state.weekLength, state.rounding, state.adjustments)
+      return { ...state, projectData, originalProjectData, adjustments: {} }
     }
     case DISPATCH_ACTION.WEEK_LENGTH_CHANGED: {
       const weekLength = (action.value as number)
       return {
         ...state,
         weekLength,
-        projectData: manipulateData(state.originalProjectData, weekLength, state.rounding),
+        projectData: manipulateData(state.originalProjectData, weekLength, state.rounding, state.adjustments),
       }
     }
     case DISPATCH_ACTION.START_CHANGED: {
@@ -44,12 +44,32 @@ function reducer(state: any, action: { type: string, value: any }) {
       return {
         ...state,
         rounding,
-        projectData: manipulateData(state.originalProjectData, state.weekLength, rounding),
+        projectData: manipulateData(state.originalProjectData, state.weekLength, rounding, state.adjustments),
       }
     }
-    case DISPATCH_ACTION.ROUNDING: {
-      console.log("rounding UNIMPLEMENTED")
-      return state
+    case DISPATCH_ACTION.ADJUST: {
+      console.log("rounding", action)
+      const projectID = action.projectID || ""
+      const columnIndex = action.columnIndex || 0
+      if (!projectID) {
+        return state
+      }
+      const adjustments = { ...state.adjustments }
+
+      const adjustmentKey = `${projectID}-${columnIndex}`
+
+      if (!(adjustmentKey in adjustments)) {
+        // add default colindex value if missing
+        adjustments[adjustmentKey] = 0
+      }
+      // adjust data
+      adjustments[adjustmentKey] += (action.value as number) * ((state.rounding || DEFAULT_ADJUSTMENT) * 60 * 1000)
+
+      return {
+        ...state,
+        adjustments,
+        projectData: manipulateData(state.originalProjectData, state.weekLength, state.rounding, adjustments),
+      }
     }
     default: {
       console.warn("Unknown action", action)
@@ -65,6 +85,7 @@ function App() {
     start: moment().day(1).format("YYYY-MM-DD"),
     weekLength: 5,
     rounding: 30,
+    adjustments: {},
     projectData: {
       projects: [],
       totals: [],

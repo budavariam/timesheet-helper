@@ -28,7 +28,7 @@ const filterByWeekLength = (weekLength: number) => (e: any, i: number) => {
     return !(weekLength === 5 && (i === 5 || i === 6))
 }
 
-export function manipulateData(project: ProjectData, weekLength: number, rounding: number): ProjectData {
+export function manipulateData(project: ProjectData, weekLength: number, rounding: number, adjustments: any): ProjectData {
     const filterFn = filterByWeekLength(weekLength)
     const roundFn = roundToNearestNMinutes(rounding)
     const newProjects = [] as Project[]
@@ -39,13 +39,24 @@ export function manipulateData(project: ProjectData, weekLength: number, roundin
             ...project,
             totals: project.totals.filter(filterFn).map(roundFn)
         }
-        let projTotal = 0
-        proj.totals.slice(0, -1).forEach((item, i) => {
-            projTotal += item
+
+        const lineValues = Array(weekLength).fill(0)
+        proj.totals.slice(0, -1).forEach((value, i) => {
+            let item = value
+
+            const adjustmentKey = `${proj.uuid}-${i}`
+            if (adjustmentKey in adjustments) {
+                item += adjustments[adjustmentKey]
+            }
+            if (item < 0) {
+                item = 0
+            }
+            lineValues[i] = item
             dailyTotals[i] += item
         })
-        proj.totals[proj.totals.length - 1] = projTotal
+        lineValues.push(lineValues.reduce((acc, curr) => acc + curr, 0))
 
+        proj.totals = lineValues
         newProjects.push(proj)
     })
     dailyTotals.push(dailyTotals.reduce((acc, curr) => acc + curr, 0))

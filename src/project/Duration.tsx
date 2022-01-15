@@ -4,18 +4,20 @@ import { formatDuration } from "../util/format"
 
 export function Duration(props: any) {
     const num: number = props.value
+    const projectID: string = props.projectID
+    const columnIndex: number = props.columnIndex
     const adjustable: boolean = props.adjustable
     const dispatch: Function = props.dispatch
-    if (!num) {
-        return null
+
+    let durationNodes = null
+    if (num) {
+        const durationItems = formatDuration(num).split(":")
+        durationNodes = durationItems.map((e, i) => <span key={i} className={`time ${e === "00" ? "irrelevant" : ""} ${i < durationItems.length - 1 ? "sep" : ""}`}>{e}</span>)
     }
-    const durationItems = formatDuration(num).split(":")
+
     return <span className="duration">
-    {adjustable && <span className="adjust" onClick={() => {dispatch({type: DISPATCH_ACTION.ROUNDING, value: -1})}}>-</span>}
-    {
-        
-        durationItems.map((e, i) => <span key={i} className={`time ${e === "00" ? "irrelevant" : ""} ${i < durationItems.length-1 ? "sep" : ""}`}>{e}</span>)
-    }
-    {adjustable && <span className="adjust" onClick={() => {dispatch({type: DISPATCH_ACTION.ROUNDING, value: 1})}}>+</span>}
+        {adjustable && <span className="adjust" onClick={() => { dispatch({ type: DISPATCH_ACTION.ADJUST, projectID, columnIndex, value: -1 }) }}>-</span>}
+        {durationNodes}
+        {adjustable && <span className="adjust" onClick={() => { dispatch({ type: DISPATCH_ACTION.ADJUST, projectID, columnIndex, value: 1 }) }}>+</span>}
     </span>
 }

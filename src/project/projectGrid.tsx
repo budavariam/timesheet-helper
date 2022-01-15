@@ -49,12 +49,20 @@ export function ProjectGrid(props: any) {
               <TableCell component="th" scope="row">
                 <span style={{ color: project.hexColor }}>{project.client} {project.project}</span>
               </TableCell>
-              {project.totals.map((num, i) => <StyledTableCell key={i} align="center"><Duration value={num} dispatch={dispatch} adjustable={i !== project.totals.length - 1}/></StyledTableCell>)}
+              {project.totals.map((num, i) => (
+                <StyledTableCell key={i} align="center">
+                  <Duration projectID={project.uuid} columnIndex={i} value={num} dispatch={dispatch} adjustable={i !== project.totals.length - 1} />
+                </StyledTableCell>
+              ))}
             </TableRow>
           ))}
           <StyledTableRow>
             <StyledTableCell>Totals</StyledTableCell>
-            {projectData.totals.map((num, i) => <StyledTableCell key={i} align="center"><Duration value={num} dispatch={dispatch} adjustable={false}/></StyledTableCell>)}
+            {projectData.totals.map((num, i) => (
+              <StyledTableCell key={i} align="center">
+                <Duration value={num} dispatch={dispatch} adjustable={false} />
+              </StyledTableCell>
+            ))}
           </StyledTableRow>
         </TableBody>
       </Table>

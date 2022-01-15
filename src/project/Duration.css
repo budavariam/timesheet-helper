@@ -1,7 +1,28 @@
-.duration:first-of-type::after {
+.sep::after {
     content: ":";
 }
 
-.irrelevant {
+.time.irrelevant {
     color: gray;
+}
+
+.time {
+    cursor: pointer;
+}
+
+.duration .adjust {
+    margin: 5px;
+    border-radius: 5px;
+    padding: 2px;
+    border: 1px solid gray;
+    cursor: pointer;
+    visibility: hidden;
+}
+
+.adjust:hover {
+    color: gray;
+}
+
+.duration:hover .adjust {
+    visibility: visible;
 }

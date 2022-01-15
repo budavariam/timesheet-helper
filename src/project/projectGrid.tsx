@@ -10,7 +10,7 @@ import Paper from '@mui/material/Paper';
 import { Project, ProjectData } from '../types';
 import { formatDuration } from '../util/format';
 import "./Duration.css"
-import { roundToNearestNMinutes } from '../util/generateDate';
+import { Duration } from './Duration';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}:last-child, &.${tableCellClasses.body}:last-child`]: {
@@ -28,17 +28,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function Duration(props: any) {
-  const num: number = props.value
-  if (!num) {
-    return null
-  }
-  return <>{formatDuration(num).split(":").map((e, i) => <span key={i} className={`duration ${e === "00" ? "irrelevant" : ""}`}>{e}</span>)}</>
-}
-
-
 export function ProjectGrid(props: any) {
   const projectData: ProjectData = props.projectData
+  const dispatch: Function = props.dispatch
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="simple table">
@@ -57,12 +49,12 @@ export function ProjectGrid(props: any) {
               <TableCell component="th" scope="row">
                 <span style={{ color: project.hexColor }}>{project.client} {project.project}</span>
               </TableCell>
-              {project.totals.map((num, i) => <StyledTableCell key={i} align="center"><Duration value={num} /></StyledTableCell>)}
+              {project.totals.map((num, i) => <StyledTableCell key={i} align="center"><Duration value={num} dispatch={dispatch} adjustable={i !== project.totals.length - 1}/></StyledTableCell>)}
             </TableRow>
           ))}
           <StyledTableRow>
             <StyledTableCell>Totals</StyledTableCell>
-            {projectData.totals.map((num, i) => <StyledTableCell key={i} align="center"><Duration value={num} /></StyledTableCell>)}
+            {projectData.totals.map((num, i) => <StyledTableCell key={i} align="center"><Duration value={num} dispatch={dispatch} adjustable={false}/></StyledTableCell>)}
           </StyledTableRow>
         </TableBody>
       </Table>

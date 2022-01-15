@@ -38,7 +38,7 @@ export function manipulateData(project: ProjectData, weekLength: number, roundin
     project.projects.forEach((project) => {
         const proj = {
             ...project,
-            totals: project.totals.filter(filterFn).map(roundFn)
+            totals: project.totals.filter(filterFn)
         }
 
         const lineValues = Array(weekLength).fill(0)

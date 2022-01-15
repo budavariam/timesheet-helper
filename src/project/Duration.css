@@ -26,3 +26,9 @@
 .duration:hover .adjust {
     visibility: visible;
 }
+
+.adjustmentInfo {
+    color: red;
+    cursor: pointer;
+    user-select: none;
+}

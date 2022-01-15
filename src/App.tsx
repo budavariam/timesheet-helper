@@ -48,7 +48,6 @@ function reducer(state: any, action: { type: string, value: any, projectID?: str
       }
     }
     case DISPATCH_ACTION.ADJUST: {
-      console.log("rounding", action)
       const projectID = action.projectID || ""
       const columnIndex = action.columnIndex || 0
       if (!projectID) {
@@ -181,7 +180,12 @@ function App() {
           </Grid>
         </Card>
         {
-          state?.projectData && <ProjectGrid dispatch={dispatch} weekLength={state.weekLength} projectData={state.projectData}></ProjectGrid>
+          state?.projectData && <ProjectGrid
+            dispatch={dispatch}
+            weekLength={state.weekLength}
+            projectData={state.projectData}
+            adjustments={state.adjustments}
+          ></ProjectGrid>
         }
       </Container>
     </>

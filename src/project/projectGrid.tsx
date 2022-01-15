@@ -30,7 +30,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export function ProjectGrid(props: any) {
   const projectData: ProjectData = props.projectData
-  const adjustments: any = props.adjustments 
   const dispatch: Function = props.dispatch
   return (
     <TableContainer component={Paper}>
@@ -58,7 +57,7 @@ export function ProjectGrid(props: any) {
                     value={num}
                     dispatch={dispatch}
                     adjustable={i !== project.totals.length - 1}
-                    adjusted={adjustments[`${project.uuid}-${i}`] || 0}
+                    adjusted={project.adjustments[i] || 0}
                   />
                 </StyledTableCell>
               ))}

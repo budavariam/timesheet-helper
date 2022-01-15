@@ -10,7 +10,7 @@ import { enumeratePastMondays } from './util/generateDate';
 import { useProjectFetch } from './api/toggl';
 import { Card, Container, Grid, TextField } from '@mui/material';
 import { useLocalStorage } from './util/useLocalStorage';
-import { ProjectData } from './types';
+import { Project, ProjectData } from './types';
 import { manipulateData, processProjectData } from './util/projectData';
 import { DEFAULT_ADJUSTMENT, DISPATCH_ACTION } from './util/const';
 
@@ -25,7 +25,7 @@ function reducer(state: any, action: { type: string, value: any, projectID?: str
       const dateFrom = state.start
       const dateTo = moment(state.start).add(7, 'days').format("YYYY-MM-DD")
       const originalProjectData = processProjectData(action.value, dateFrom, dateTo)
-      const projectData = manipulateData(originalProjectData, state.weekLength, state.rounding, state.adjustments)
+      const projectData = manipulateData(originalProjectData, state.weekLength, state.rounding, {})
       return { ...state, projectData, originalProjectData, adjustments: {} }
     }
     case DISPATCH_ACTION.WEEK_LENGTH_CHANGED: {
@@ -54,9 +54,7 @@ function reducer(state: any, action: { type: string, value: any, projectID?: str
         return state
       }
       const adjustments = { ...state.adjustments }
-
       const adjustmentKey = `${projectID}-${columnIndex}`
-
       if (!(adjustmentKey in adjustments)) {
         // add default colindex value if missing
         adjustments[adjustmentKey] = 0
@@ -89,6 +87,7 @@ function App() {
       projects: [],
       totals: [],
       headers: [],
+      adjustments: [],
     } as ProjectData
   })
 
@@ -184,7 +183,6 @@ function App() {
             dispatch={dispatch}
             weekLength={state.weekLength}
             projectData={state.projectData}
-            adjustments={state.adjustments}
           ></ProjectGrid>
         }
       </Container>

@@ -11,6 +11,7 @@ export function processProjectData(response: any, dateFrom: string, dateTo: stri
             project: project.title.project || "-",
             hexColor: project.title.hex_color || "#000000",
             totals: project.totals,
+            adjustments: Array(7).fill(0),
         }
     }
     ).sort((a: Project, b: Project) => a.client.localeCompare(b.client))
@@ -41,12 +42,15 @@ export function manipulateData(project: ProjectData, weekLength: number, roundin
         }
 
         const lineValues = Array(weekLength).fill(0)
+        const adjustmentValues = Array(weekLength).fill(0)
         proj.totals.slice(0, -1).forEach((value, i) => {
             let item = value
 
             const adjustmentKey = `${proj.uuid}-${i}`
             if (adjustmentKey in adjustments) {
-                item += adjustments[adjustmentKey]
+                const adj = adjustments[adjustmentKey]
+                adjustmentValues[i] = adj
+                item += adj
             }
             if (item < 0) {
                 item = 0
@@ -56,7 +60,8 @@ export function manipulateData(project: ProjectData, weekLength: number, roundin
         })
         lineValues.push(lineValues.reduce((acc, curr) => acc + curr, 0))
 
-        proj.totals = lineValues
+        proj.totals = lineValues.map(roundFn)
+        proj.adjustments = adjustmentValues
         newProjects.push(proj)
     })
     dailyTotals.push(dailyTotals.reduce((acc, curr) => acc + curr, 0))

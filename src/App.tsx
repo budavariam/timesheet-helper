@@ -25,15 +25,15 @@ function reducer(state: any, action: { type: string, value: any, projectID?: str
       const dateFrom = state.start
       const dateTo = moment(state.start).add(7, 'days').format("YYYY-MM-DD")
       const originalProjectData = processProjectData(action.value, dateFrom, dateTo)
-      const projectData = manipulateData(originalProjectData, state.weekLength, state.rounding, {})
-      return { ...state, projectData, originalProjectData, adjustments: {} }
+      const projectData = manipulateData(originalProjectData, state.weekLength, state.rounding, {}, {})
+      return { ...state, projectData, originalProjectData, adjustments: {}, ignoreProjects: {} }
     }
     case DISPATCH_ACTION.WEEK_LENGTH_CHANGED: {
       const weekLength = (action.value as number)
       return {
         ...state,
         weekLength,
-        projectData: manipulateData(state.originalProjectData, weekLength, state.rounding, state.adjustments),
+        projectData: manipulateData(state.originalProjectData, weekLength, state.rounding, state.adjustments, state.ignoreProjects),
       }
     }
     case DISPATCH_ACTION.START_CHANGED: {
@@ -44,7 +44,31 @@ function reducer(state: any, action: { type: string, value: any, projectID?: str
       return {
         ...state,
         rounding,
-        projectData: manipulateData(state.originalProjectData, state.weekLength, rounding, state.adjustments),
+        projectData: manipulateData(state.originalProjectData, state.weekLength, rounding, state.adjustments, state.ignoreProjects),
+      }
+    }
+    case DISPATCH_ACTION.IGNORE_PROJECT_TOGGLE: {
+      const projectID = action.projectID || ""
+      const proj = state.projectData.projects.filter((e: Project) => e.uuid === projectID)[0]
+      if (!proj) {
+        return state
+      }
+      let ignoreProjects = {} as any
+      if (proj.uuid in state.ignoreProjects) {
+        ignoreProjects = {
+          ...state.ignoreProjects,
+        }
+        delete ignoreProjects[proj.uuid]
+      } else {
+        ignoreProjects = {
+          ...state.ignoreProjects,
+          [proj.uuid]: true,
+        }
+      }
+      return {
+        ...state,
+        ignoreProjects,
+        projectData: manipulateData(state.originalProjectData, state.weekLength, state.rounding, state.adjustments, ignoreProjects)
       }
     }
     case DISPATCH_ACTION.ADJUST: {
@@ -65,7 +89,7 @@ function reducer(state: any, action: { type: string, value: any, projectID?: str
       return {
         ...state,
         adjustments,
-        projectData: manipulateData(state.originalProjectData, state.weekLength, state.rounding, adjustments),
+        projectData: manipulateData(state.originalProjectData, state.weekLength, state.rounding, adjustments, state.ignoreProjects),
       }
     }
     default: {
@@ -88,6 +112,7 @@ function App() {
       totals: [],
       headers: [],
       adjustments: [],
+      ignoreProjects: {},
     } as ProjectData
   })
 

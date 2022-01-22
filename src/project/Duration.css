@@ -28,7 +28,6 @@
 }
 
 .adjustmentInfo {
-    color: red;
     cursor: pointer;
     user-select: none;
 }
@@ -41,3 +40,7 @@
     color: green;
 }
 
+.ignored {
+    opacity: 0.3;
+    filter: grayscale(1);
+}

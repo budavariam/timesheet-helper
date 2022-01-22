@@ -12,6 +12,7 @@ export function processProjectData(response: any, dateFrom: string, dateTo: stri
             hexColor: project.title.hex_color || "#000000",
             totals: project.totals,
             adjustments: Array(7).fill(0),
+            ignore: false,
         }
     }
     ).sort((a: Project, b: Project) => a.client.localeCompare(b.client))
@@ -29,15 +30,17 @@ const filterByWeekLength = (weekLength: number) => (e: any, i: number) => {
     return !(weekLength === 5 && (i === 5 || i === 6))
 }
 
-export function manipulateData(project: ProjectData, weekLength: number, rounding: number, adjustments: any): ProjectData {
+export function manipulateData(project: ProjectData, weekLength: number, rounding: number, adjustments: any, ignoreProjects: any): ProjectData {
     const filterFn = filterByWeekLength(weekLength)
     const roundFn = roundToNearestNMinutes(rounding)
     const newProjects = [] as Project[]
     const dailyTotals = Array(7).fill(0)
 
     project.projects.forEach((project) => {
+        const ignore = project.uuid in ignoreProjects
         const proj = {
             ...project,
+            ignore,
             totals: project.totals.filter(filterFn)
         }
 
@@ -56,7 +59,9 @@ export function manipulateData(project: ProjectData, weekLength: number, roundin
                 item = 0
             }
             lineValues[i] = item
-            dailyTotals[i] += item
+            if (!ignore) {
+                dailyTotals[i] += item
+            }
         })
         lineValues.push(lineValues.reduce((acc, curr) => acc + curr, 0))
 

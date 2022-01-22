@@ -13,6 +13,7 @@ import { useLocalStorage } from './util/useLocalStorage';
 import { Project, ProjectData } from './types';
 import { manipulateData, processProjectData } from './util/projectData';
 import { DEFAULT_ADJUSTMENT, DISPATCH_ACTION } from './util/const';
+import { PlainTextData } from './project/PlainTextData';
 
 function reducer(state: any, action: { type: string, value: any, projectID?: string, columnIndex?: number }) {
   if (!action || !action.type) {
@@ -210,6 +211,7 @@ function App() {
             projectData={state.projectData}
           ></ProjectGrid>
         }
+        <PlainTextData projectData={state.projectData}/>
       </Container>
     </>
   )

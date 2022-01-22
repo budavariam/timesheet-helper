@@ -1,0 +1,8 @@
+.plaintext {
+    background-color: #eeeeee;
+    border: 1px solid black;
+    margin: 20px 0;
+    padding: 20px;
+    overflow: auto;
+    height: 200px;
+}

@@ -19,7 +19,12 @@ export function Duration(props: any) {
     return <span className="duration">
         {adjustable && <span className="adjust" onClick={() => { dispatch({ type: DISPATCH_ACTION.ADJUST, projectID, columnIndex, value: -1 }) }}>-</span>}
         {durationNodes}
-        <span className="adjustmentInfo" style={{ visibility: adjusted ? "visible" : "hidden" }} title={`Changed by: ${formatDuration(adjusted)}`}>*</span>
+        <span
+            className={`adjustmentInfo ${adjusted > 0 ? "plus" : "minus"}`}
+            style={{ visibility: adjusted ? "visible" : "hidden" }}
+            title={`Changed by: ${formatDuration(adjusted)}`}>
+            *
+        </span>
         {adjustable && <span className="adjust" onClick={() => { dispatch({ type: DISPATCH_ACTION.ADJUST, projectID, columnIndex, value: 1 }) }}>+</span>}
     </span>
 }

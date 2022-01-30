@@ -114,6 +114,7 @@ function App() {
       headers: [],
       adjustments: [],
       ignoreProjects: {},
+      totalAdjustments: [],
     } as ProjectData
   })
 

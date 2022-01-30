@@ -1,4 +1,4 @@
-import { Project, ProjectData, ProjectResponse } from "../types";
+import { Project, ProjectData } from "../types";
 import { enumerateDaysBetweenDates, roundToNearestNMinutes } from "../util/generateDate"
 import { v4 as uuidv4 } from "uuid"
 import moment from 'moment';
@@ -17,12 +17,14 @@ export function processProjectData(response: any, dateFrom: string, dateTo: stri
     }
     ).sort((a: Project, b: Project) => a.client.localeCompare(b.client))
     const totals = (response.week_totals || []) as number[]
+    const totalAdjustments = [] as number[]
     const headers = enumerateDaysBetweenDates(moment(dateFrom), moment(dateTo))
 
     return {
         projects,
         headers,
         totals,
+        totalAdjustments,
     }
 }
 
@@ -35,6 +37,7 @@ export function manipulateData(project: ProjectData, weekLength: number, roundin
     const roundFn = roundToNearestNMinutes(rounding)
     const newProjects = [] as Project[]
     const dailyTotals = Array(7).fill(0)
+    const dailyTotalAdjustments = Array(7).fill(0)
 
     project.projects.forEach((project) => {
         const ignore = project.uuid in ignoreProjects
@@ -54,6 +57,9 @@ export function manipulateData(project: ProjectData, weekLength: number, roundin
                 const adj = adjustments[adjustmentKey]
                 adjustmentValues[i] = adj
                 item += adj
+                if (!ignore) {
+                    dailyTotalAdjustments[i] += adj
+                }
             }
             if (item < 0) {
                 item = 0
@@ -63,16 +69,19 @@ export function manipulateData(project: ProjectData, weekLength: number, roundin
                 dailyTotals[i] += item
             }
         })
-        lineValues.push(lineValues.reduce((acc, curr) => acc + curr, 0))
+        lineValues.push(lineValues.reduce((acc, curr) => acc + curr, 0)) // totals for line
+        adjustmentValues.push(adjustmentValues.reduce((acc, curr) => acc + curr, 0)) // total adjustments for line
 
         proj.totals = lineValues.map(roundFn)
         proj.adjustments = adjustmentValues
         newProjects.push(proj)
     })
-    dailyTotals.push(dailyTotals.reduce((acc, curr) => acc + curr, 0))
+    dailyTotals.push(dailyTotals.reduce((acc, curr) => acc + curr, 0)) // grandtotal
+    dailyTotalAdjustments.push(dailyTotalAdjustments.reduce((acc, curr) => acc + curr, 0)) // grandtotal
     return {
         projects: newProjects,
         headers: project.headers.filter(filterFn),
         totals: dailyTotals.filter(filterFn).map(roundFn),
+        totalAdjustments: dailyTotalAdjustments.filter(filterFn).map(roundFn),
     }
 }

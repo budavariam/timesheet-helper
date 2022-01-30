@@ -73,6 +73,17 @@ export function ProjectGrid(props: any) {
                     adjusted={project.adjustments[i] || 0}
                     showEmpty={i === project.totals.length - 1}
                   />
+                  {(i === project.totals.length - 1) &&
+                   <span className="ignored">
+                  &nbsp;(<Duration 
+                    value={project.adjustments[i]} 
+                    dispatch={dispatch} 
+                    adjustable={false} 
+                    showEmpty={true}
+                    hideInfo={true}
+                  />)
+                   </span>
+                   }
                 </StyledTableCell>
               ))}
             </TableRow>
@@ -83,6 +94,15 @@ export function ProjectGrid(props: any) {
             {projectData.totals.map((num, i) => (
               <StyledTableCell key={i} align="center">
                 <Duration value={num} dispatch={dispatch} adjustable={false} showEmpty={true} />
+                <br/>
+                <span className="ignored">
+                <Duration 
+                  value={projectData.totalAdjustments[i]} 
+                  dispatch={dispatch}
+                  adjustable={false}
+                  showEmpty={true}
+                  />
+                </span>
               </StyledTableCell>
             ))}
           </StyledTableRow>

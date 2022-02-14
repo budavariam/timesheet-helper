@@ -1,13 +1,93 @@
 import { tableFooterClasses } from "@mui/material";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { Column, useBlockLayout, useExpanded, useSortBy, useTable } from "react-table";
+import { DndProvider, useDrag, useDrop } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 import { FixedSizeList } from 'react-window'
+import update from 'immutability-helper'
 import "./Table.css"
 
 export type TableProps = {
   enableSorting?: boolean;
   hideHeaders?: boolean;
 };
+
+
+const DND_ITEM_TYPE = 'row'
+
+const Row = (props: any) => {
+  const { row, index, moveRow } = props
+
+  const dropRef = useRef<HTMLTableRowElement>(null)
+  const dragRef = useRef<HTMLTableCellElement>(null)
+
+  const [, drop] = useDrop<{index: number}, string, boolean>({
+    accept: DND_ITEM_TYPE,
+    hover(item, monitor) {
+      if (!dropRef.current) {
+        return
+      }
+      const dragIndex = item.index
+      const hoverIndex = index
+      // Don't replace items with themselves
+      if (dragIndex === hoverIndex) {
+        return
+      }
+      // Determine rectangle on screen
+      const hoverBoundingRect = dropRef.current?.getBoundingClientRect()
+      // Get vertical middle
+      const hoverMiddleY =
+        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
+      // Determine mouse position
+      const clientOffset = monitor.getClientOffset()
+      if (!clientOffset) {
+        return
+      }
+      // Get pixels to the top
+      const hoverClientY = clientOffset.y - hoverBoundingRect.top
+      // Only perform the move when the mouse has crossed half of the items height
+      // When dragging downwards, only move when the cursor is below 50%
+      // When dragging upwards, only move when the cursor is above 50%
+      // Dragging downwards
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+        return
+      }
+      // Dragging upwards
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+        return
+      }
+      // Time to actually perform the action
+      moveRow(dragIndex, hoverIndex)
+      // Note: we're mutating the monitor item here!
+      // Generally it's better to avoid mutations,
+      // but it's good here for the sake of performance
+      // to avoid expensive index searches.
+      item.index = hoverIndex
+    },
+  })
+
+  const [{ isDragging }, drag, preview] = useDrag<any, any, { isDragging: boolean }>({
+    item: { type: DND_ITEM_TYPE, index },
+    type: DND_ITEM_TYPE,
+    collect: monitor => ({
+      isDragging: monitor.isDragging(),
+    }),
+  })
+
+  const opacity = isDragging ? 0 : 1
+
+  preview(drop(dropRef))
+  drag(dragRef)
+
+  return (
+    <tr ref={dropRef as React.RefObject<HTMLTableRowElement>} style={{ opacity }}>
+      <td ref={dragRef as React.RefObject<HTMLTableCellElement>}>move</td>
+      {row.cells.map((cell: any) => {
+        return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+      })}
+    </tr>
+  )
+}
 
 /**
  * If data in a column is numeric and no custom Cell render function
@@ -43,7 +123,14 @@ export function Table(props: TableProps) {
    * every render and attempt to recalulate a lot of logic every single
    * time. Not cool!
    */
-
+  const [records, setRecords] = useState(() => Array(100).fill(null).map((item, i) => ({
+    col0: `Label ${i}`,
+    col1: 0.1,
+    col2: Math.floor(1 + Math.random() * 25),
+    col3: 2.0,
+    col4: 3.1,
+    col5: 4.2,
+  })))
   const defaultColumn = useMemo(
     () => ({
       width: 150,
@@ -51,14 +138,6 @@ export function Table(props: TableProps) {
     []
   )
 
-  const data = useMemo(() => Array(100).fill(null).map((item, i) => ({
-    col0: `Label ${i}`,
-    col1: 0.1,
-    col2: Math.floor(1 + Math.random() * 25),
-    col3: 2.0,
-    col4: 3.1,
-    col5: 4.2,
-  })), [])
   const columns = useMemo(
     () => [
       {
@@ -94,16 +173,19 @@ export function Table(props: TableProps) {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, totalColumnsWidth } =
     useTable(
       // @ts-ignore
-      { columns, data, defaultColumn, disableSortBy: !props.enableSorting },
+      { columns, data: records, defaultColumn, disableSortBy: !props.enableSorting },
       useSortBy,
       useExpanded,
       useBlockLayout
     );
 
-    const scrollBarSize = useMemo(() => scrollbarWidth(), [])
+  const scrollBarSize = useMemo(() => scrollbarWidth(), [])
 
-    const RenderRow = useCallback(
-      ({ index, style }) => {
+  const RenderRow = useCallback(
+    (a) => {
+      console.log("AAA", a)
+      return (data: any) => {
+        const { index, style } = data
         const row = rows[index]
         prepareRow(row)
         return (
@@ -122,67 +204,81 @@ export function Table(props: TableProps) {
             })}
           </div>
         )
-      },
-      [prepareRow, rows]
-    )
+      }
+    },
+    [prepareRow, rows]
+  )
 
+  const moveRow = (dragIndex: number, hoverIndex: number) => {
+    const dragRecord = records[dragIndex]
+    setRecords(
+      update(records, {
+        $splice: [
+          [dragIndex, 1],
+          [hoverIndex, 0, dragRecord],
+        ],
+      })
+    )
+  }
 
   return (
     // apply the table props
-    <table {...getTableProps()}>
-      {!props.hideHeaders && (
-        <thead>
-          {
-            // Loop over the header rows
-            headerGroups.map((headerGroup: any) => (
-              // Apply the header row props
-              <tr {...headerGroup.getHeaderGroupProps()} className="th">
-                {
-                  // Loop over the headers in each row
-                  headerGroup.headers.map((column: any) => (
-                    // Apply the header cell props
-                    <th
-                      {...column.getHeaderProps(column.getSortByToggleProps())}
-                    >
-                      {
-                        // Render the header
-                        column.render("Header")
-                      }
-                      {/* Add a sort direction indicator */}
-                      <span>
-                        {props.enableSorting ? (
-                          column.isSorted ? (
-                            column.isSortedDesc ? (
-                              "ds"
+    <DndProvider backend={HTML5Backend}>
+      <table {...getTableProps()}>
+        {!props.hideHeaders && (
+          <thead>
+            {
+              // Loop over the header rows
+              headerGroups.map((headerGroup: any) => (
+                // Apply the header row props
+                <tr {...headerGroup.getHeaderGroupProps()} className="th">
+                  {
+                    // Loop over the headers in each row
+                    headerGroup.headers.map((column: any) => (
+                      // Apply the header cell props
+                      <th
+                        {...column.getHeaderProps(column.getSortByToggleProps())}
+                      >
+                        {
+                          // Render the header
+                          column.render("Header")
+                        }
+                        {/* Add a sort direction indicator */}
+                        <span>
+                          {props.enableSorting ? (
+                            column.isSorted ? (
+                              column.isSortedDesc ? (
+                                "ds"
+                              ) : (
+                                "as"
+                              )
                             ) : (
-                              "as"
+                              ""
                             )
-                          ) : (
-                            ""
-                          )
-                        ) : null}
-                      </span>
-                    </th>
-                  ))
-                }
-              </tr>
-            ))
-          }
-        </thead>
-      )}
+                          ) : null}
+                        </span>
+                      </th>
+                    ))
+                  }
+                </tr>
+              ))
+            }
+          </thead>
+        )}
 
-      {/* Apply the table body props */}
-      <tbody {...getTableBodyProps()}>
-      <FixedSizeList
-          height={400}
-          itemCount={rows.length}
-          itemSize={50}
-          width={totalColumnsWidth+scrollBarSize}
-        >
-          {RenderRow}
-        </FixedSizeList>
-      </tbody>
-    </table>
+        {/* Apply the table body props */}
+        <tbody {...getTableBodyProps()}>
+          <FixedSizeList
+            height={400}
+            itemCount={rows.length}
+            itemSize={50}
+            width={totalColumnsWidth + scrollBarSize}
+          >
+            {RenderRow("cica")}
+          </FixedSizeList>
+        </tbody>
+      </table>
+    </DndProvider>
   );
 }
 

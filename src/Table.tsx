@@ -16,12 +16,12 @@ export type TableProps = {
 const DND_ITEM_TYPE = 'row'
 
 const Row = (props: any) => {
-  const { row, index, moveRow } = props
+  const { row, index, moveRow, style } = props
 
-  const dropRef = useRef<HTMLTableRowElement>(null)
-  const dragRef = useRef<HTMLTableCellElement>(null)
+  const dropRef = useRef<HTMLDivElement>(null)
+  const dragRef = useRef<HTMLDivElement>(null)
 
-  const [, drop] = useDrop<{index: number}, string, boolean>({
+  const [, drop] = useDrop<{ index: number }, string, boolean>({
     accept: DND_ITEM_TYPE,
     hover(item, monitor) {
       if (!dropRef.current) {
@@ -80,13 +80,23 @@ const Row = (props: any) => {
   drag(dragRef)
 
   return (
-    <tr ref={dropRef as React.RefObject<HTMLTableRowElement>} style={{ opacity }}>
-      <td ref={dragRef as React.RefObject<HTMLTableCellElement>}>move</td>
-      {row.cells.map((cell: any) => {
-        return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+    <div
+      ref={dropRef as React.RefObject<HTMLDivElement>} style={{ opacity }}
+      {...row.getRowProps({
+        style,
       })}
-    </tr>
+      className="tr"
+    >
+      {row.cells.map((cell: any, i: number) => {
+        return (
+          <div ref={i === 0 ? dragRef as React.RefObject<HTMLDivElement> : null} {...cell.getCellProps()} className="td">
+            {cell.render('Cell')}
+          </div>
+        )
+      })}
+    </div>
   )
+
 }
 
 /**
@@ -182,44 +192,32 @@ export function Table(props: TableProps) {
   const scrollBarSize = useMemo(() => scrollbarWidth(), [])
 
   const RenderRow = useCallback(
-    (a) => {
-      console.log("AAA", a)
-      return (data: any) => {
-        const { index, style } = data
-        const row = rows[index]
-        prepareRow(row)
-        return (
-          <div
-            {...row.getRowProps({
-              style,
-            })}
-            className="tr"
-          >
-            {row.cells.map(cell => {
-              return (
-                <div {...cell.getCellProps()} className="td">
-                  {cell.render('Cell')}
-                </div>
-              )
-            })}
-          </div>
-        )
-      }
-    },
+    (data: any) => {
+      console.log("cicca")
+      //   const moveRow = (dragIndex: number, hoverIndex: number) => {
+      //     const dragRecord = records[dragIndex]
+      //     setRecords(
+      //       update(records, {
+      //         $splice: [
+      //           [dragIndex, 1],
+      //           [hoverIndex, 0, dragRecord],
+      //         ],
+      //       })
+      //     )
+      //   }
+      const { index, style } = data
+      const row = rows[index]
+      prepareRow(row)
+      return <Row
+        index={index}
+        row={row}
+        style={style}
+        moveRow={(a: any, b: any, c: any) => { console.log("MOVE AAA", a, b, c) }}
+      />
+    }
+    ,
     [prepareRow, rows]
   )
-
-  const moveRow = (dragIndex: number, hoverIndex: number) => {
-    const dragRecord = records[dragIndex]
-    setRecords(
-      update(records, {
-        $splice: [
-          [dragIndex, 1],
-          [hoverIndex, 0, dragRecord],
-        ],
-      })
-    )
-  }
 
   return (
     // apply the table props
@@ -269,12 +267,13 @@ export function Table(props: TableProps) {
         {/* Apply the table body props */}
         <tbody {...getTableBodyProps()}>
           <FixedSizeList
+            itemData={{ "asd": "cica" }}
             height={400}
             itemCount={rows.length}
             itemSize={50}
             width={totalColumnsWidth + scrollBarSize}
           >
-            {RenderRow("cica")}
+            {RenderRow}
           </FixedSizeList>
         </tbody>
       </table>

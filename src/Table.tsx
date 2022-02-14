@@ -194,17 +194,17 @@ export function Table(props: TableProps) {
   const RenderRow = useCallback(
     (data: any) => {
       console.log("cicca")
-      //   const moveRow = (dragIndex: number, hoverIndex: number) => {
-      //     const dragRecord = records[dragIndex]
-      //     setRecords(
-      //       update(records, {
-      //         $splice: [
-      //           [dragIndex, 1],
-      //           [hoverIndex, 0, dragRecord],
-      //         ],
-      //       })
-      //     )
-      //   }
+        const moveRow = (dragIndex: number, hoverIndex: number) => {
+          const dragRecord = records[dragIndex]
+          setRecords(
+            update(records, {
+              $splice: [
+                [dragIndex, 1],
+                [hoverIndex, 0, dragRecord],
+              ],
+            })
+          )
+        }
       const { index, style } = data
       const row = rows[index]
       prepareRow(row)
@@ -212,7 +212,7 @@ export function Table(props: TableProps) {
         index={index}
         row={row}
         style={style}
-        moveRow={(a: any, b: any, c: any) => { console.log("MOVE AAA", a, b, c) }}
+        moveRow={moveRow}
       />
     }
     ,

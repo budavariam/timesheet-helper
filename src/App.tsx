@@ -1,5 +1,5 @@
 import './App.css';
-import { useReducer } from 'react';
+import { useReducer, useMemo } from 'react';
 import moment from 'moment';
 import { ProjectGrid } from "./project/projectGrid";
 import InputLabel from '@mui/material/InputLabel';
@@ -14,6 +14,7 @@ import { Project, ProjectData } from './types';
 import { manipulateData, processProjectData } from './util/projectData';
 import { DEFAULT_ADJUSTMENT, DISPATCH_ACTION } from './util/const';
 import { PlainTextData } from './project/PlainTextData';
+import { Table } from './Table';
 
 function reducer(state: any, action: { type: string, value: any, projectID?: string, columnIndex?: number }) {
   if (!action || !action.type) {
@@ -212,6 +213,7 @@ function App() {
             projectData={state.projectData}
           ></ProjectGrid>
         }
+        <Table></Table>
         <PlainTextData projectData={state.projectData}/>
       </Container>
     </>

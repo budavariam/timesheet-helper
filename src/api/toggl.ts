@@ -3,6 +3,7 @@ import { useEffect } from "react"
 import useFetch from "use-http"
 import { DISPATCH_ACTION } from "../util/const"
 import { ProjectResponse } from "../types"
+import mockData from "./data.json";
 
 export const useProjectFetch = (dateFrom: string, apiToken: string, workspaceId: string, dispatch: Function): [loading: boolean, error: Error | undefined, project: ProjectResponse] => {
     const {
@@ -31,7 +32,8 @@ export const useProjectFetch = (dateFrom: string, apiToken: string, workspaceId:
     }
 
     useEffect(() => {
-        loadProjects(workspaceId, dateFrom)
+        dispatch({ type: DISPATCH_ACTION.PROJECT_LOADED, value: mockData })
+        // loadProjects(workspaceId, dateFrom)
     }, [workspaceId, apiToken, dateFrom])
     return [loading, error, project]
 }

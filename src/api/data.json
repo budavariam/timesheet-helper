@@ -1,0 +1,392 @@
+{
+    "total_grand": 142107000,
+    "total_billable": null,
+    "total_currencies": [
+        {
+            "currency": null,
+            "amount": null
+        }
+    ],
+    "data": [
+        {
+            "title": {
+                "client": "Client1",
+                "project": "Project1",
+                "color": "0",
+                "hex_color": "#525266"
+            },
+            "pid": 170272329,
+            "totals": [
+                null,
+                null,
+                null,
+                null,
+                1800000,
+                null,
+                null,
+                1800000
+            ],
+            "details": [
+                {
+                    "uid": 6899064,
+                    "title": {
+                        "user": "me"
+                    },
+                    "totals": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        1800000,
+                        null,
+                        null,
+                        1800000
+                    ]
+                }
+            ]
+        },
+        {
+            "title": {
+                "client": "Client2",
+                "project": "Project2",
+                "color": "0",
+                "hex_color": "#06a893"
+            },
+            "pid": 170163984,
+            "totals": [
+                null,
+                null,
+                1800000,
+                null,
+                null,
+                null,
+                null,
+                1800000
+            ],
+            "details": [
+                {
+                    "uid": 6899064,
+                    "title": {
+                        "user": "me"
+                    },
+                    "totals": [
+                        null,
+                        null,
+                        1800000,
+                        null,
+                        null,
+                        null,
+                        null,
+                        1800000
+                    ]
+                }
+            ]
+        },
+        {
+            "title": {
+                "client": "Client3",
+                "project": "Project3",
+                "color": "0",
+                "hex_color": "#9e5bd9"
+            },
+            "pid": 169998126,
+            "totals": [
+                4500000,
+                null,
+                900000,
+                9236000,
+                null,
+                null,
+                null,
+                14636000
+            ],
+            "details": [
+                {
+                    "uid": 6899064,
+                    "title": {
+                        "user": "me"
+                    },
+                    "totals": [
+                        4500000,
+                        null,
+                        900000,
+                        9236000,
+                        null,
+                        null,
+                        null,
+                        14636000
+                    ]
+                }
+            ]
+        },
+        {
+            "title": {
+                "client": "Client4",
+                "project": "Project4",
+                "color": "0",
+                "hex_color": "#e36a00"
+            },
+            "pid": 175885858,
+            "totals": [
+                12103000,
+                27767000,
+                20393000,
+                null,
+                12600000,
+                null,
+                null,
+                72863000
+            ],
+            "details": [
+                {
+                    "uid": 6899064,
+                    "title": {
+                        "user": "me"
+                    },
+                    "totals": [
+                        12103000,
+                        27767000,
+                        20393000,
+                        null,
+                        12600000,
+                        null,
+                        null,
+                        72863000
+                    ]
+                }
+            ]
+        },
+        {
+            "title": {
+                "client": "Client5",
+                "project": "Project5",
+                "color": "0",
+                "hex_color": "#0b83d9"
+            },
+            "pid": 177761780,
+            "totals": [
+                1800000,
+                null,
+                null,
+                5400000,
+                null,
+                null,
+                null,
+                7200000
+            ],
+            "details": [
+                {
+                    "uid": 6899064,
+                    "title": {
+                        "user": "me"
+                    },
+                    "totals": [
+                        1800000,
+                        null,
+                        null,
+                        5400000,
+                        null,
+                        null,
+                        null,
+                        7200000
+                    ]
+                }
+            ]
+        },
+        {
+            "title": {
+                "client": "Client6",
+                "project": "Project6",
+                "color": "0",
+                "hex_color": "#0b83d9"
+            },
+            "pid": 179408345,
+            "totals": [
+                null,
+                null,
+                null,
+                27121000,
+                2700000,
+                null,
+                null,
+                29821000
+            ],
+            "details": [
+                {
+                    "uid": 6899064,
+                    "title": {
+                        "user": "me"
+                    },
+                    "totals": [
+                        null,
+                        null,
+                        null,
+                        27121000,
+                        2700000,
+                        null,
+                        null,
+                        29821000
+                    ]
+                }
+            ]
+        },
+        {
+            "title": {
+                "client": "Client7",
+                "project": "Project7",
+                "color": "0",
+                "hex_color": "#0b83d9"
+            },
+            "pid": 178225433,
+            "totals": [
+                null,
+                null,
+                null,
+                null,
+                3600000,
+                null,
+                null,
+                3600000
+            ],
+            "details": [
+                {
+                    "uid": 6899064,
+                    "title": {
+                        "user": "me"
+                    },
+                    "totals": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        3600000,
+                        null,
+                        null,
+                        3600000
+                    ]
+                }
+            ]
+        },
+        {
+            "title": {
+                "client": "Client8",
+                "project": "Project8",
+                "color": "0",
+                "hex_color": "#0b83d9"
+            },
+            "pid": 170037482,
+            "totals": [
+                613000,
+                null,
+                1674000,
+                null,
+                null,
+                null,
+                null,
+                2287000
+            ],
+            "details": [
+                {
+                    "uid": 6899064,
+                    "title": {
+                        "user": "me"
+                    },
+                    "totals": [
+                        613000,
+                        null,
+                        1674000,
+                        null,
+                        null,
+                        null,
+                        null,
+                        2287000
+                    ]
+                }
+            ]
+        },
+        {
+            "title": {
+                "client": "Client9",
+                "project": "Project9",
+                "color": "0",
+                "hex_color": "#0b83d9"
+            },
+            "pid": 177761848,
+            "totals": [
+                2700000,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                2700000
+            ],
+            "details": [
+                {
+                    "uid": 6899064,
+                    "title": {
+                        "user": "me"
+                    },
+                    "totals": [
+                        2700000,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        2700000
+                    ]
+                }
+            ]
+        },
+        {
+            "title": {
+                "client": "Client10",
+                "project": "Project10",
+                "color": "0",
+                "hex_color": "#0b83d9"
+            },
+            "pid": 178698402,
+            "totals": [
+                null,
+                null,
+                5400000,
+                null,
+                null,
+                null,
+                null,
+                5400000
+            ],
+            "details": [
+                {
+                    "uid": 6899064,
+                    "title": {
+                        "user": "me"
+                    },
+                    "totals": [
+                        null,
+                        null,
+                        5400000,
+                        null,
+                        null,
+                        null,
+                        null,
+                        5400000
+                    ]
+                }
+            ]
+        }
+    ],
+    "week_totals": [
+        21716000,
+        27767000,
+        30167000,
+        41757000,
+        20700000,
+        null,
+        null,
+        142107000
+    ]
+}

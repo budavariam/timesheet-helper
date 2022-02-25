@@ -5,11 +5,16 @@ import { DndProvider, useDrag, useDrop } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { FixedSizeList } from 'react-window'
 import update from 'immutability-helper'
-import "./Table.css"
+import "./ProjectTable.css"
+import { ProjectData } from "../types";
+import { generateHeaderColumns } from "../util/projectData";
 
 export type TableProps = {
-  enableSorting?: boolean;
-  hideHeaders?: boolean;
+  enableSorting?: boolean
+  hideHeaders?: boolean
+  dispatch: any
+  weekLength: number
+  projectData: ProjectData
 };
 
 
@@ -126,61 +131,23 @@ const scrollbarWidth = () => {
   return scrollbarWidth
 }
 
-export function Table(props: TableProps) {
+export function ProjectTable(props: TableProps) {
   /* It's important that we're using React.useMemo here to ensure
    * that our data isn't recreated on every render. If we didn't use
    * React.useMemo, the table would think it was receiving new data on
    * every render and attempt to recalulate a lot of logic every single
    * time. Not cool!
    */
-  const [records, setRecords] = useState(() => Array(100).fill(null).map((item, i) => ({
-    col0: `Label ${i}`,
-    col1: 0.1,
-    col2: Math.floor(1 + Math.random() * 25),
-    col3: 2.0,
-    col4: 3.1,
-    col5: 4.2,
-  })))
-  const defaultColumn = useMemo(
-    () => ({
+  const setRecords = (..._:any) => {}
+  const records = useMemo(() => props.projectData.projects, [props.projectData.projects])
+  const defaultColumn = useMemo(() => ({
       width: 150,
     }),
     []
   )
+  const columns = useMemo(() => generateHeaderColumns(props.projectData.headers),[props.projectData.headers]);
 
-  const columns = useMemo(
-    () => [
-      {
-        Header: "Title",
-        accessor: "col0", // accessor is the "key" in the data
-        width: 250,
-      },
-      {
-        Header: "Header 1",
-        accessor: "col1",
-        width: 100,
-      },
-      {
-        Header: "Header 2",
-        accessor: "col2",
-      },
-      {
-        Header: "Header 3",
-        accessor: "col3",
-      },
-      {
-        Header: "Header 4",
-        accessor: "col4",
-      },
-      {
-        Header: "Header 5",
-        accessor: "col5",
-      },
-    ],
-    []
-  );
-
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, totalColumnsWidth } =
+  const { getTableProps, getTableBodyProps, headerGroups, footerGroups, rows, prepareRow, totalColumnsWidth } =
     useTable(
       // @ts-ignore
       { columns, data: records, defaultColumn, disableSortBy: !props.enableSorting },
@@ -193,18 +160,17 @@ export function Table(props: TableProps) {
 
   const RenderRow = useCallback(
     (data: any) => {
-      console.log("cicca")
-        const moveRow = (dragIndex: number, hoverIndex: number) => {
-          const dragRecord = records[dragIndex]
-          setRecords(
-            update(records, {
-              $splice: [
-                [dragIndex, 1],
-                [hoverIndex, 0, dragRecord],
-              ],
-            })
-          )
-        }
+      const moveRow = (dragIndex: number, hoverIndex: number) => {
+        const dragRecord = records[dragIndex]
+        setRecords(
+          update(records, {
+            $splice: [
+              [dragIndex, 1],
+              [hoverIndex, 0, dragRecord],
+            ],
+          })
+        )
+      }
       const { index, style } = data
       const row = rows[index]
       prepareRow(row)
@@ -218,7 +184,7 @@ export function Table(props: TableProps) {
     ,
     [prepareRow, rows]
   )
-
+  console.log(footerGroups)
   return (
     // apply the table props
     <DndProvider backend={HTML5Backend}>
@@ -243,17 +209,14 @@ export function Table(props: TableProps) {
                         }
                         {/* Add a sort direction indicator */}
                         <span>
-                          {props.enableSorting ? (
-                            column.isSorted ? (
-                              column.isSortedDesc ? (
-                                "ds"
-                              ) : (
-                                "as"
-                              )
-                            ) : (
-                              ""
-                            )
-                          ) : null}
+                          {props.enableSorting
+                            ? column.isSorted
+                              ? column.isSortedDesc
+                                ? ("v")
+                                : ("^")
+                              : ""
+                            : null
+                          }
                         </span>
                       </th>
                     ))
@@ -276,9 +239,18 @@ export function Table(props: TableProps) {
             {RenderRow}
           </FixedSizeList>
         </tbody>
+        <tfoot>
+          {footerGroups.map((group: any) => {
+            return (<tr {...group.getFooterGroupProps()}>
+              {group.headers.map((column: any) => {
+                return (<td {...column.getFooterProps()}>{column.render('Footer')}</td>)
+              })}
+            </tr>)
+          })}
+        </tfoot>
       </table>
     </DndProvider>
   );
 }
 
-Table.defaultProps = { enableSorting: true, hideHeaders: false };
+ProjectTable.defaultProps = { enableSorting: true, hideHeaders: false };

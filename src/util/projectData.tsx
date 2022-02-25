@@ -1,7 +1,68 @@
-import { Project, ProjectData } from "../types";
-import { enumerateDaysBetweenDates, roundToNearestNMinutes } from "../util/generateDate"
+import { Project, ProjectData, ProjectHeader } from "../types";
+import { enumerateDaysBetweenDates, roundToNearestNMinutes } from "./generateDate"
 import { v4 as uuidv4 } from "uuid"
+import { Duration } from "../project/Duration"
 import moment from 'moment';
+
+export const generateHeaderColumns = (dates: string[]): ProjectHeader[] => {
+    const headers = [
+        {
+            Header: "",
+            accessor: "actions",
+            width: 70,
+        },
+        {
+            Header: "Name",
+            accessor: "name",
+            width: 150,
+        },
+        ...dates.map((date: string, i: number) => {
+            return {
+                Header: date,
+                accessor: (line: any, a: any, b: any, c: any) => {
+                    console.log("XX", line, a, b, c)
+                    return [line.totals[i], line.adjustments[i]]
+                },
+                Cell: (cell: any) => {
+                    console.log("CELL", cell)
+                    const project = cell.row.original
+                    const dispatch = cell.dispatch
+                    return (
+                        <>
+                            <Duration
+                                projectID={project.uuid}
+                                columnIndex={i}
+                                value={cell.value[0]}
+                                dispatch={dispatch}
+                                adjustable={i !== project.totals.length - 1}
+                                adjusted={project.adjustments[i] || 0}
+                                showEmpty={i === project.totals.length - 1
+                                }
+                            />
+                            {
+                                (i === project.totals.length - 1) &&
+                                <span className="ignored">
+                                    &nbsp; (<Duration
+                                        value={project.adjustments[i]}
+                                        dispatch={dispatch}
+                                        adjustable={false}
+                                        showEmpty={true}
+                                        hideInfo={true}
+                                    />)
+                                </span>
+                            }
+                        </>)
+                },
+                Footer: () => { return 13 }
+            }
+        },
+        {
+            Header: "Totals",
+            accessor: "totals"
+        })
+    ]
+    return headers
+}
 
 export function processProjectData(response: any, dateFrom: string, dateTo: string): ProjectData {
     const projects: Project[] = response.data.map((project: any): Project => {

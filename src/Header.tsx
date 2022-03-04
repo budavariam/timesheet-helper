@@ -64,7 +64,8 @@ export const Header = (props: HeaderProps) => {
                             onChange={(e) => { dispatch({ type: DISPATCH_ACTION.ROUNDING_CHANGED, value: parseInt(`${e.target.value}`, 10) }) }}
                         >
                             <MenuItem value={0}>No Rounding</MenuItem>
-                            <MenuItem value={30}>30 minute</MenuItem>
+                            <MenuItem value={15}>15 minutes</MenuItem>
+                            <MenuItem value={30}>30 minutes</MenuItem>
                             <MenuItem value={60}>Hour</MenuItem>
                         </Select>
                     </FormControl>

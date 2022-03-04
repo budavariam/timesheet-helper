@@ -4,11 +4,11 @@ import { formatAllDuration, formatDuration } from "../util/format"
 const createDurationNodes = (e: string, i: number, lst: string[]) => <span key={i} className={`time ${e === "00" ? "irrelevant" : ""} ${i < lst.length - 1 ? "sep" : ""}`}>{e}</span>
 
 type DurationProps = {
-    projectID: string,
-    columnIndex: number,
     num: number,
-    adjusted: number,
     dispatch: Function,
+    adjusted: number,
+    columnIndex: number,
+    projectID?: string,
     hideInfo?: boolean,
     showEmpty?: boolean,
     adjustable?: boolean,
@@ -47,4 +47,6 @@ Duration.defaultProps = {
     hideInfo: false,
     showEmpty: false,
     adjustable: false,
+    adjusted: 0,
+    columnIndex: -1,
 }

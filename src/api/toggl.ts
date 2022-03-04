@@ -34,7 +34,7 @@ export const useProjectFetch = (dateFrom: string, apiToken: string, workspaceId:
     }
 
     useEffect(() => {
-        if (DEV_DATA) {
+        if (DEV_DATA || !workspaceId || !apiToken) {
             dispatch({ type: DISPATCH_ACTION.PROJECT_LOADED, value: mockData })
         } else {
             loadProjects(workspaceId, dateFrom)

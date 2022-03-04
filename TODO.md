@@ -4,15 +4,15 @@
 - [ ] Filter by project
   - [ ] persist selection to localstorage
   - [ ] inverse selection by some btn
-- [+] show/hide ignore lines
+- [x] show/hide ignore lines
 - [ ] reorder lines by dragging
-- [+] show 0 values in some cases, keep layout without jumping on change
-- [+] Increase/decrease number
-  - [+] recalculate totals
-- [+] round to 30min
-- [+] export to csv
-  - [+] show csvlike data
-  - [+] copy btn to the text box
+- [x] show 0 values in some cases, keep layout without jumping on change
+- [x] Increase/decrease number
+  - [x] recalculate totals
+- [x] round to 30min
+- [x] export to csv
+  - [x] show csvlike data
+  - [x] copy btn to the text box
   - [ ] export to csv file
 - [ ] import from line data in a textarea
 - [ ] racionalize localstorage
@@ -22,5 +22,5 @@
 - [ ] error handling
 - [ ] loading handling
 - [ ] clean up code architecture and warnings
-  - [+] extract Header component
+  - [x] extract Header component
   - [ ] do not mutate data in the manipulateData fn

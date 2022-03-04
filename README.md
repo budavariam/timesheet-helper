@@ -21,13 +21,13 @@ npm install
 npm start
 ```
 
-For toggl integration: Set the WorkspaceID and APIKey from the website.
-
 If you don't want to spam the toggl api during  development, you can set an env variable e.g in `.env.local`
 
 ```conf
 REACT_APP_DEV_DATA=true
 ```
+
+For toggl integration: Set the WorkspaceID and APIKey from the website into the 2 input fields in the app.
 
 ## Ideas for development
 

@@ -97,9 +97,12 @@ const filterByWeekLength = (weekLength: number) => (e: any, i: number) => {
     return !(weekLength === 5 && (i === 5 || i === 6))
 }
 
-export function manipulateData(project: ProjectData, weekLength: number, rounding: number, adjustments: any, ignoreProjects: any): ProjectData {
+export function manipulateData(project: ProjectData, weekLength: number, rounding: number, adjustments: any, ignoreProjects: any, projectOrder: string[] = []): ProjectData {
     const filterFn = filterByWeekLength(weekLength)
     const roundFn = roundToNearestNMinutes(rounding)
+    const sortFn = projectOrder.length
+        ? (list: Project[]) => list.sort((a, b) => projectOrder.indexOf(a.uuid) - projectOrder.indexOf(b.uuid))
+        : (list: Project[]) => list
     const newProjects = [] as Project[]
     const dailyTotals = Array(7).fill(0)
     const dailyTotalAdjustments = Array(7).fill(0)
@@ -149,7 +152,7 @@ export function manipulateData(project: ProjectData, weekLength: number, roundin
     // Adjustments Grandtotal
     dailyTotalAdjustments.push(dailyTotalAdjustments.reduce((acc, curr) => acc + curr, 0))
     return {
-        projects: newProjects,
+        projects: sortFn(newProjects),
         headers: project.headers.filter(filterFn),
         totals: dailyTotals.filter(filterFn),
         totalAdjustments: dailyTotalAdjustments.filter(filterFn),

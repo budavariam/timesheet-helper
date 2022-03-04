@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import { Project, ProjectData } from '../types';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
+// import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import "./Duration.css"
 import { Duration } from './Duration';
 import { DISPATCH_ACTION } from '../util/const';
@@ -48,7 +49,7 @@ export function ProjectGrid(props: ProjectGridProps) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {projectData.projects.map((project: Project) => (
+          {projectData.projects.map((project: Project, pi: number) => (
             <TableRow
               key={project.uuid}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -63,7 +64,15 @@ export function ProjectGrid(props: ProjectGridProps) {
                   } </span>
               </TableCell>
               <TableCell component="th" scope="row">
-                <span style={{ color: project.hexColor }}>{project.client} {project.project}</span>
+                <span
+                  className="clickable"
+                  style={{ color: project.hexColor }}
+                  title="Move up one line..."
+                  onClick={() => {
+                    dispatch({ type: DISPATCH_ACTION.ORDER_CHANGED, value: project.uuid })
+                  }}>
+                  {project.client} {project.project}
+                </span>
               </TableCell>
               {project.totals.map((num, i) => (
                 <StyledTableCell key={i} align="center">
@@ -87,6 +96,9 @@ export function ProjectGrid(props: ProjectGridProps) {
                       />)
                     </span>
                   }
+                  {/* {(i === project.totals.length - 1) && <span className="ignored" style={{ visibility: pi !== 0 ? "visible" : "hidden" }} onClick={() => {
+                    dispatch({ type: DISPATCH_ACTION.ORDER_CHANGED, value: project.uuid })
+                  }}><ArrowDropUpIcon /></span>} */}
                 </StyledTableCell>
               ))}
             </TableRow>

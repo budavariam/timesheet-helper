@@ -1,5 +1,7 @@
 # Timesheet Helper
 
+[DEMO](https://budavariam.github.io/timesheet-helper/)
+
 I've started to use [Toggl Track](https://track.toggl.com) last year to keep track of my time.
 I wanted to know how much time do I spend on different projects and activities.
 

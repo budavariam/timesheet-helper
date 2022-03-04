@@ -63,14 +63,12 @@ export function ProjectGrid(props: ProjectGridProps) {
                   : <VisibilityOutlinedIcon />
                   } </span>
               </TableCell>
-              <TableCell component="th" scope="row">
-                <span
-                  className="clickable"
-                  style={{ color: project.hexColor }}
-                  title="Move up one line..."
-                  onClick={() => {
-                    dispatch({ type: DISPATCH_ACTION.ORDER_CHANGED, value: project.uuid })
-                  }}>
+              <TableCell component="th" scope="row" title="Move up one line..."
+                className="clickable"
+                onClick={() => {
+                  dispatch({ type: DISPATCH_ACTION.ORDER_CHANGED, value: project.uuid })
+                }}>
+                <span style={{ color: project.hexColor }}>
                   {project.client} {project.project}
                 </span>
               </TableCell>

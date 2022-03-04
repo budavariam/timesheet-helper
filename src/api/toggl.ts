@@ -5,6 +5,8 @@ import { DISPATCH_ACTION } from "../util/const"
 import { ProjectResponse } from "../types"
 import mockData from "./data.json";
 
+const DEV_DATA = process.env.REACT_APP_DEV_DATA ?? false // during development I don't want to spam the API
+
 export const useProjectFetch = (dateFrom: string, apiToken: string, workspaceId: string, dispatch: Function): [loading: boolean, error: Error | undefined, project: ProjectResponse] => {
     const {
         loading,
@@ -32,8 +34,11 @@ export const useProjectFetch = (dateFrom: string, apiToken: string, workspaceId:
     }
 
     useEffect(() => {
-        dispatch({ type: DISPATCH_ACTION.PROJECT_LOADED, value: mockData })
-        // loadProjects(workspaceId, dateFrom)
+        if (DEV_DATA) {
+            dispatch({ type: DISPATCH_ACTION.PROJECT_LOADED, value: mockData })
+        } else {
+            loadProjects(workspaceId, dateFrom)
+        }
     }, [workspaceId, apiToken, dateFrom])
     return [loading, error, project]
 }

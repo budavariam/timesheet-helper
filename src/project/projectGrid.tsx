@@ -29,9 +29,14 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-export function ProjectGrid(props: any) {
-  const projectData: ProjectData = props.projectData
-  const dispatch: Function = props.dispatch
+type ProjectGridProps = {
+  projectData: ProjectData,
+  dispatch: React.Dispatch<any>,
+}
+
+export function ProjectGrid(props: ProjectGridProps) {
+  const { projectData, dispatch } = props
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="simple table">
@@ -51,11 +56,11 @@ export function ProjectGrid(props: any) {
             >
               <TableCell component="th" scope="row">
                 <span className="ignoreProject" onClick={() => {
-                  dispatch({type: DISPATCH_ACTION.IGNORE_PROJECT_TOGGLE, projectID: project.uuid})
+                  dispatch({ type: DISPATCH_ACTION.IGNORE_PROJECT_TOGGLE, projectID: project.uuid })
                 }}>{project.ignore
-                ? <VisibilityOffOutlinedIcon/>
-                : <VisibilityOutlinedIcon/> 
-                } </span>
+                  ? <VisibilityOffOutlinedIcon />
+                  : <VisibilityOutlinedIcon />
+                  } </span>
               </TableCell>
               <TableCell component="th" scope="row">
                 <span style={{ color: project.hexColor }}>{project.client} {project.project}</span>
@@ -65,23 +70,23 @@ export function ProjectGrid(props: any) {
                   <Duration
                     projectID={project.uuid}
                     columnIndex={i}
-                    value={num}
+                    num={num}
                     dispatch={dispatch}
                     adjustable={i !== project.totals.length - 1}
                     adjusted={project.adjustments[i] || 0}
                     showEmpty={i === project.totals.length - 1}
                   />
                   {(i === project.totals.length - 1) &&
-                   <span className="ignored">
-                  &nbsp;(<Duration 
+                    <span className="ignored">
+                      {/* &nbsp;(<Duration 
                     value={project.adjustments[i]} 
                     dispatch={dispatch} 
                     adjustable={false} 
                     showEmpty={true}
                     hideInfo={true}
-                  />)
-                   </span>
-                   }
+                  />) */}
+                    </span>
+                  }
                 </StyledTableCell>
               ))}
             </TableRow>
@@ -91,15 +96,15 @@ export function ProjectGrid(props: any) {
             <StyledTableCell>Totals</StyledTableCell>
             {projectData.totals.map((num, i) => (
               <StyledTableCell key={i} align="center">
-                <Duration value={num} dispatch={dispatch} adjustable={false} showEmpty={true} />
-                <br/>
+                {/* <Duration num={num} dispatch={dispatch} adjustable={false} showEmpty={true} /> */}
+                <br />
                 <span className="ignored">
-                <Duration 
-                  value={projectData.totalAdjustments[i]} 
+                  {/* <Duration 
+                  num={projectData.totalAdjustments[i]} 
                   dispatch={dispatch}
                   adjustable={false}
                   showEmpty={true}
-                  />
+                  /> */}
                 </span>
               </StyledTableCell>
             ))}

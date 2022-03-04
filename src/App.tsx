@@ -136,7 +136,6 @@ function App() {
         {
           state?.projectData && <ProjectGrid
             dispatch={dispatch}
-            weekLength={state.weekLength}
             projectData={state.projectData}
           ></ProjectGrid>
         }

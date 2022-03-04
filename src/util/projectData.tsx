@@ -30,20 +30,24 @@ export const generateHeaderColumns = (dates: string[]): ProjectHeader[] => {
                     return (
                         <>
                             <Duration
+                                num={0}
                                 projectID={project.uuid}
                                 columnIndex={i}
-                                value={cell.value[0]}
+                                // value={cell.value[0]}
                                 dispatch={dispatch}
                                 adjustable={i !== project.totals.length - 1}
                                 adjusted={project.adjustments[i] || 0}
-                                showEmpty={i === project.totals.length - 1
-                                }
+                                showEmpty={i === project.totals.length - 1}
                             />
                             {
                                 (i === project.totals.length - 1) &&
                                 <span className="ignored">
                                     &nbsp; (<Duration
-                                        value={project.adjustments[i]}
+                                        projectID=""
+                                        columnIndex={0}
+                                        num={0}
+                                        adjusted={0}
+                                        // value={project.adjustments[i]}
                                         dispatch={dispatch}
                                         adjustable={false}
                                         showEmpty={true}

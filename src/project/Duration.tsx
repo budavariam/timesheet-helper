@@ -3,15 +3,28 @@ import { formatAllDuration, formatDuration } from "../util/format"
 
 const createDurationNodes = (e: string, i: number, lst: string[]) => <span key={i} className={`time ${e === "00" ? "irrelevant" : ""} ${i < lst.length - 1 ? "sep" : ""}`}>{e}</span>
 
-export function Duration(props: any) {
-    const num: number = props.value
-    const projectID: string = props.projectID
-    const hideInfo: boolean = props.hideInfo || false
-    const columnIndex: number = props.columnIndex
-    const adjusted: number = props.adjusted
-    const adjustable: boolean = props.adjustable
-    const dispatch: Function = props.dispatch
-    const showEmpty: boolean = props.showEmpty || false
+type DurationProps = {
+    projectID: string,
+    columnIndex: number,
+    num: number,
+    adjusted: number,
+    dispatch: Function,
+    hideInfo?: boolean,
+    showEmpty?: boolean,
+    adjustable?: boolean,
+}
+
+export function Duration(props: DurationProps) {
+    const {
+        num,
+        projectID,
+        hideInfo,
+        columnIndex,
+        adjusted,
+        adjustable,
+        dispatch,
+        showEmpty,
+    } = props
 
     const durationItems = formatAllDuration(num).split(":")
     const durationNodes = durationItems.map(createDurationNodes)
@@ -28,4 +41,10 @@ export function Duration(props: any) {
         }
         {adjustable && <span className="adjust" onClick={() => { dispatch({ type: DISPATCH_ACTION.ADJUST, projectID, columnIndex, value: 1 }) }}>+</span>}
     </span>
+}
+
+Duration.defaultProps = {
+    hideInfo: false,
+    showEmpty: false,
+    adjustable: false,
 }

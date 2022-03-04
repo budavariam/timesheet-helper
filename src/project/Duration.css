@@ -10,6 +10,10 @@
     cursor: pointer;
 }
 
+.duration {
+    user-select: none;
+}
+
 .duration .adjust {
     margin: 5px;
     border-radius: 5px;

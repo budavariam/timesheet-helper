@@ -141,12 +141,12 @@ function App() {
             projectData={state.projectData}
           ></ProjectGrid>
         }
-        <ProjectTable
+        {/* <ProjectTable
           dispatch={dispatch}
           weekLength={state.weekLength}
           projectData={state.projectData}
-        ></ProjectTable>
-        <PlainTextData projectData={state.projectData} />
+        ></ProjectTable> */}
+        {/* <PlainTextData projectData={state.projectData} /> */}
       </Container>
     </>
   )

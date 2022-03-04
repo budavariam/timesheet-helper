@@ -146,7 +146,7 @@ function App() {
           weekLength={state.weekLength}
           projectData={state.projectData}
         ></ProjectTable> */}
-        {/* <PlainTextData projectData={state.projectData} /> */}
+        <PlainTextData projectData={state.projectData} />
       </Container>
     </>
   )

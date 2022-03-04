@@ -22,7 +22,7 @@ export const Header = (props: HeaderProps) => {
         state, dispatch, dateSelection, localStorageKey, setKey, localStorageWid, setWid,
     } = props
     return (
-        // <Card elevation={1} style={{ marginBottom: 15, marginTop: 15 }}>
+        <Card elevation={1} style={{ marginBottom: 15, marginTop: 15, padding: "0 15px" }}>
             <Grid container spacing={2}>
                 <Grid item xs={12} md={2}>
                     <FormControl size="small" fullWidth margin="dense">
@@ -98,6 +98,6 @@ export const Header = (props: HeaderProps) => {
                     </FormControl>
                 </Grid>
             </Grid>
-        // </Card>
+        </Card>
         )
 }

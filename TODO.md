@@ -11,6 +11,10 @@
   - [+] recalculate totals
 - [+] round to 30min
 - [+] export to csv
+  - [+] show csvlike data
+  - [+] copy btn to the text box
+  - [ ] export to csv file
+- [ ] import from line data in a textarea
 - [ ] racionalize localstorage
 - [ ] cache api calls
 - [ ] Show day number
@@ -18,3 +22,5 @@
 - [ ] error handling
 - [ ] loading handling
 - [ ] clean up code architecture and warnings
+  - [+] extract Header component
+  - [ ] do not mutate data in the manipulateData fn

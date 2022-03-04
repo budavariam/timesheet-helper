@@ -1,54 +1,34 @@
-# Getting Started with Create React App
+# Timesheet Helper
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+I've started to use [Toggl Track](https://track.toggl.com) last year to keep track of my time.
+I wanted to know how much time do I spend on different projects and activities.
 
-## Available Scripts
+It also helps me see where am I on the work-life balance scale in any given week.
 
-In the project directory, you can run:
+I have to fill my timesheets for work, I thought it would be beneficial if I had a tool to help me with that.
 
-### `npm start`
+Toggl Track reports were a good start, but I wanted more extensibility.
+With this site I'm able to hide weekends, and show rounded data.
+The best part is that I'm able to spill the overwork between days while the adjustments are visible per project basis and visible in the totals as well.
+Since I track my side projects and also my personal timeouts I need the possibility to hide certain projects from the report.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Getting Started
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```bash
+npm install
+npm start
+```
 
-### `npm test`
+For toggl integration: Set the WorkspaceID and APIKey from the website.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+If you don't want to spam the toggl api during  development, you can set an env variable e.g in `.env.local`
 
-### `npm run build`
+```conf
+REACT_APP_DEV_DATA=true
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Ideas for development
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+I know that the project structure is ugly, I aimed for an MVP and improving the code bit by bit ever since.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-## Modules
-
-- [useFetch](https://use-http.com/#/?id=basic-usage-auto-managed-state)
-- [moment duration format](https://www.npmjs.com/package/moment-duration-format)
-- [moment](https://www.npmjs.com/package/moment)
-- [axios](https://www.npmjs.com/package/axios)
-- [CRA](https://create-react-app.dev/docs/adding-typescript/)
+Things that I think could improve the quality are kept in the [TODO](./TODO.md) doc.

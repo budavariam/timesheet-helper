@@ -56,10 +56,10 @@ export const generateHeaderColumns = (dates: string[]): ProjectHeader[] => {
                 Footer: () => { return 13 }
             }
         },
-        {
-            Header: "Totals",
-            accessor: "totals"
-        })
+            {
+                Header: "Totals",
+                accessor: "totals"
+            })
     ]
     return headers
 }
@@ -101,11 +101,11 @@ export function manipulateData(project: ProjectData, weekLength: number, roundin
     const dailyTotalAdjustments = Array(7).fill(0)
 
     project.projects.forEach((project) => {
-        const ignore = project.uuid in ignoreProjects
+        const shouldIgnore = project.uuid in ignoreProjects
         const proj = {
             ...project,
-            ignore,
-            totals: project.totals.filter(filterFn)
+            ignore: shouldIgnore,
+            totals: [...project.totals].filter(filterFn)
         }
 
         const lineValues = Array(weekLength).fill(0)
@@ -118,31 +118,36 @@ export function manipulateData(project: ProjectData, weekLength: number, roundin
                 const adj = adjustments[adjustmentKey]
                 adjustmentValues[i] = adj
                 item += adj
-                if (!ignore) {
-                    dailyTotalAdjustments[i] += adj
+                if (!shouldIgnore) {
+                    dailyTotalAdjustments[i] += roundFn(adj)
                 }
             }
             if (item < 0) {
                 item = 0
             }
-            lineValues[i] = item
-            if (!ignore) {
-                dailyTotals[i] += item
+            lineValues[i] = roundFn(item)
+            if (!shouldIgnore) {
+                dailyTotals[i] += roundFn(item)
             }
         })
-        lineValues.push(lineValues.reduce((acc, curr) => acc + curr, 0)) // totals for line
-        adjustmentValues.push(adjustmentValues.reduce((acc, curr) => acc + curr, 0)) // total adjustments for line
 
-        proj.totals = lineValues.map(roundFn)
+        // Sum of values for line
+        lineValues.push(lineValues.reduce((acc, curr) => acc + curr, 0))
+        // Sum of adjustments for line
+        adjustmentValues.push(adjustmentValues.reduce((acc, curr) => acc + curr, 0))
+
+        proj.totals = lineValues
         proj.adjustments = adjustmentValues
         newProjects.push(proj)
     })
-    dailyTotals.push(dailyTotals.reduce((acc, curr) => acc + curr, 0)) // grandtotal
-    dailyTotalAdjustments.push(dailyTotalAdjustments.reduce((acc, curr) => acc + curr, 0)) // grandtotal
+    // Daily Grandtotal
+    dailyTotals.push(dailyTotals.reduce((acc, curr) => acc + curr, 0))
+    // Adjustments Grandtotal
+    dailyTotalAdjustments.push(dailyTotalAdjustments.reduce((acc, curr) => acc + curr, 0))
     return {
         projects: newProjects,
         headers: project.headers.filter(filterFn),
-        totals: dailyTotals.filter(filterFn).map(roundFn),
-        totalAdjustments: dailyTotalAdjustments.filter(filterFn).map(roundFn),
+        totals: dailyTotals.filter(filterFn),
+        totalAdjustments: dailyTotalAdjustments.filter(filterFn),
     }
 }

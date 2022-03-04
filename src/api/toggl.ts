@@ -23,7 +23,7 @@ export const useProjectFetch = (dateFrom: string, apiToken: string, workspaceId:
         get,
         response,
         error,
-        data: project = { data: [], headers: [], weekTotals: [] }
+        data: project = { data: [], headers: [], week_totals: [] }
     } = useFetch<ProjectResponse>(
         `https://api.track.toggl.com/reports/api/v2`,
         {

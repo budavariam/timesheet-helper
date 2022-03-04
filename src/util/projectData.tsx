@@ -1,4 +1,4 @@
-import { Project, ProjectData, ProjectHeader } from "../types";
+import { Project, ProjectData, ProjectHeader, ProjectResponse } from "../types";
 import { enumerateDaysBetweenDates, roundToNearestNMinutes } from "./generateDate"
 import { v4 as uuidv4 } from "uuid"
 import { Duration } from "../project/Duration"
@@ -68,7 +68,7 @@ export const generateHeaderColumns = (dates: string[]): ProjectHeader[] => {
     return headers
 }
 
-export function processProjectData(response: any, dateFrom: string, dateTo: string): ProjectData {
+export function processProjectData(response: ProjectResponse, dateFrom: string, dateTo: string): ProjectData {
     const projects: Project[] = response.data.map((project: any): Project => {
         return {
             uuid: uuidv4(),

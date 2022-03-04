@@ -10,7 +10,6 @@ import { Project, ProjectData } from './types';
 import { manipulateData, processProjectData } from './util/projectData';
 import { DEFAULT_ADJUSTMENT, DISPATCH_ACTION } from './util/const';
 import { PlainTextData } from './project/PlainTextData';
-import { ProjectTable } from './project/ProjectTable';
 import { Header } from './Header';
 
 function reducer(state: any, action: { type: string, value: any, projectID?: string, columnIndex?: number }) {
@@ -118,7 +117,7 @@ function App() {
 
   const [localStorageKey, setKey] = useLocalStorage("key", "");
   const [localStorageWid, setWid] = useLocalStorage("wid", "");
-  const [loading, error, project] = useProjectFetch(state.start, localStorageKey, localStorageWid, dispatch)
+  useProjectFetch(state.start, localStorageKey, localStorageWid, dispatch)
 
   const dateSelection = enumeratePastMondays(moment(), 10)
   return (

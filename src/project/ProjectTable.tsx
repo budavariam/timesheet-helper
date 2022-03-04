@@ -5,7 +5,7 @@ import { DndProvider, useDrag, useDrop } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { FixedSizeList } from 'react-window'
 import update from 'immutability-helper'
-import "./ProjectTable.css"
+import styles from "./ProjectTable.module.css"
 import { ProjectData } from "../types";
 import { generateHeaderColumns } from "../util/projectData";
 
@@ -184,11 +184,10 @@ export function ProjectTable(props: TableProps) {
     ,
     [prepareRow, rows]
   )
-  console.log(footerGroups)
   return (
     // apply the table props
     <DndProvider backend={HTML5Backend}>
-      <table {...getTableProps()}>
+      <table {...getTableProps()} className={styles["project-table"]}>
         {!props.hideHeaders && (
           <thead>
             {

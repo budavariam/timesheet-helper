@@ -1,20 +1,20 @@
-table {
+.project-table {
   border-spacing: 0;
   border: 1px solid black;
 }
-table tr:last-child td {
+.project-table tr:last-child td {
   border-bottom: 0;
 }
 
-table th,
-table td {
+.project-table th,
+.project-table td {
   margin: 0;
   padding: 0.5rem;
   border-bottom: 1px solid black;
   border-right: 1px solid black;
 }
 
-table th:last-child,
-table td:last-child {
+.project-table th:last-child,
+.project-table td:last-child {
   border-right: 0;
 }

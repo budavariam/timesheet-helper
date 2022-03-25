@@ -16,7 +16,7 @@ export function PlainTextData(props: PlainTextDataProps) {
             return [
                 p.client,
                 p.project,
-                p.totals.slice(0, -1).map((val, i) => formatAllDuration(val + p.adjustments[i])),
+                p.totals.slice(0, -1).map((val, i) => formatAllDuration(val)),
             ].join(",")
         })
 

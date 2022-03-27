@@ -1,6 +1,7 @@
 import React from 'react';
 import { ProjectData } from '../types';
 import { formatAllDuration } from '../util/format';
+import { CopyToClipboard } from './CopyToClipboard';
 import "./PlainTextData.css"
 
 type PlainTextDataProps = {
@@ -20,12 +21,16 @@ export function PlainTextData(props: PlainTextDataProps) {
             ].join(",")
         })
 
+    const formattedData = csvHeader.concat(csvBody).join("\n")
+    const JSONData = JSON.stringify(projectData.projects, null, 2)
     return (<>
         <pre className='plaintext'>
-            {csvHeader.concat(csvBody).join("\n")}
+            {formattedData}
+            <CopyToClipboard data={formattedData}/>
         </pre>
         <pre className='plaintext'>
-            {JSON.stringify(projectData.projects, null, 2)}
+            {JSONData}
+            <CopyToClipboard data={JSONData}/>
         </pre>
     </>)
 }

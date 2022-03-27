@@ -1,4 +1,5 @@
 .plaintext {
+    position: relative;
     background-color: #eeeeee;
     border: 1px solid black;
     margin: 20px 0;

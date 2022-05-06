@@ -1,3 +1,7 @@
+// config-like settings, that might be exposed to users later
+export const ROUNDED_ADJUSTMENTS = false // Currently I think it's better to show the original values even if a rounding is selected
+
+// enums
 export const DISPATCH_ACTION = {
     PROJECT_LOADED: "PROJECT_LOADED",
     WEEK_LENGTH_CHANGED: "WEEK_LENGTH_CHANGED",
@@ -8,4 +12,5 @@ export const DISPATCH_ACTION = {
     ORDER_CHANGED: "ORDER_CHANGED",
 }
 
+// should not change these
 export const DEFAULT_ADJUSTMENT = 1

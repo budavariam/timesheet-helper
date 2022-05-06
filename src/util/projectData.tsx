@@ -3,6 +3,7 @@ import { enumerateDaysBetweenDates, roundToNearestNMinutes } from "./generateDat
 import { v4 as uuidv4 } from "uuid"
 import { Duration } from "../project/Duration"
 import moment from 'moment';
+import { ROUNDED_ADJUSTMENTS } from "./const";
 
 export const generateHeaderColumns = (dates: string[]): ProjectHeader[] => {
     const headers = [
@@ -126,7 +127,7 @@ export function manipulateData(project: ProjectData, weekLength: number, roundin
                 adjustmentValues[i] = adj
                 item += adj
                 if (!shouldIgnore) {
-                    dailyTotalAdjustments[i] += roundFn(adj)
+                    dailyTotalAdjustments[i] += ROUNDED_ADJUSTMENTS ? roundFn(adj) : adj
                 }
             }
             if (item < 0) {

@@ -14,12 +14,17 @@ type HeaderProps = {
     setKey: React.Dispatch<any>,
     localStorageWid: string,
     setWid: React.Dispatch<any>,
+    localStorageWebsite: string,
+    setWebsite: React.Dispatch<any>,
     children?: React.ReactChild,
 }
 
 export const Header = (props: HeaderProps) => {
     const {
-        state, dispatch, dateSelection, localStorageKey, setKey, localStorageWid, setWid,
+        state, dispatch, dateSelection, 
+        localStorageKey, setKey, 
+        localStorageWid, setWid,
+        localStorageWebsite, setWebsite,
     } = props
     return (
         <Card elevation={1} style={{ marginBottom: 15, marginTop: 15, padding: "0 15px" }}>
@@ -94,6 +99,20 @@ export const Header = (props: HeaderProps) => {
                             type="password"
                             onChange={(e) => {
                                 setWid(e.target.value)
+                            }}
+                        />
+                    </FormControl>
+                </Grid>
+                <Grid item xs={12} md={2}>
+                    <FormControl fullWidth margin="dense">
+                        <TextField
+                            id="website"
+                            value={localStorageWebsite}
+                            label="Website"
+                            variant="standard"
+                            type="text"
+                            onChange={(e) => {
+                                setWebsite(e.target.value)
                             }}
                         />
                     </FormControl>

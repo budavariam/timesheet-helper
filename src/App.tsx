@@ -137,6 +137,7 @@ function App() {
 
   const [localStorageKey, setKey] = useLocalStorage("key", "");
   const [localStorageWid, setWid] = useLocalStorage("wid", "");
+  const [localStorageWebsite, setWebsite] = useLocalStorage("website", "");
   useProjectFetch(state.start, localStorageKey, localStorageWid, dispatch)
 
   const dateSelection = enumeratePastMondays(moment(), 10)
@@ -152,13 +153,17 @@ function App() {
           localStorageKey={localStorageKey}
           setKey={setKey}
           localStorageWid={localStorageWid}
-          setWid={setWid} />
+          setWebsite={setWebsite}
+          localStorageWebsite={localStorageWebsite}
+          setWid={setWid}
+        />
         {
           state?.projectData && <ProjectGrid
             dispatch={dispatch}
             projectData={state.projectData}
           ></ProjectGrid>
         }
+        {localStorageWebsite && <iframe src={localStorageWebsite} className="external-site" title="Import data" width="100%" height="500px"></iframe>}
         {/* <ProjectTable
           dispatch={dispatch}
           weekLength={state.weekLength}

@@ -10,7 +10,6 @@ import { Project, ProjectData } from '../types';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 // import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import "./Duration.css"
 import { Duration } from './Duration';
 import { DISPATCH_ACTION } from '../util/const';
 

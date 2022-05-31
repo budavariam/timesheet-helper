@@ -6,11 +6,24 @@ import { enumeratePastMondays } from './util/generateDate';
 import { useProjectFetch } from './api/toggl';
 import { Container } from '@mui/material';
 import { useLocalStorage } from './util/useLocalStorage';
-import { Project, ProjectData } from './types';
+import { Project, ProjectData, ProjectResponse } from './types';
 import { manipulateData, processProjectData } from './util/projectData';
 import { DEFAULT_ADJUSTMENT, DISPATCH_ACTION } from './util/const';
 import { PlainTextData } from './project/PlainTextData';
 import { Header } from './Header';
+
+export function handleProjectLoaded(start: string, rawData: ProjectResponse, weekLength: number, rounding: number) {
+  const dateFrom = start
+  const dateTo = moment(start).add(7, 'days').format("YYYY-MM-DD")
+  const originalProjectData = processProjectData(rawData, dateFrom, dateTo)
+  const projectOrder = originalProjectData.projects.map(e => e.uuid)
+  const projectData = manipulateData(originalProjectData, weekLength, rounding, {}, {}, projectOrder)
+  return {
+    projectData,
+    originalProjectData,
+    projectOrder,
+  }
+}
 
 function reducer(state: any, action: { type: string, value: any, projectID?: string, columnIndex?: number }) {
   if (!action || !action.type) {
@@ -20,11 +33,9 @@ function reducer(state: any, action: { type: string, value: any, projectID?: str
   console.log("X", state, action)
   switch (action.type) {
     case DISPATCH_ACTION.PROJECT_LOADED: {
-      const dateFrom = state.start
-      const dateTo = moment(state.start).add(7, 'days').format("YYYY-MM-DD")
-      const originalProjectData = processProjectData(action.value, dateFrom, dateTo)
-      const projectOrder = originalProjectData.projects.map(e => e.uuid)
-      const projectData = manipulateData(originalProjectData, state.weekLength, state.rounding, {}, {}, projectOrder)
+      const { projectData, originalProjectData, projectOrder } = handleProjectLoaded(
+        state.start, action.value, state.weekLength, state.rounding
+      )
       return { ...state, projectData, originalProjectData, adjustments: {}, ignoreProjects: {}, projectOrder }
     }
     case DISPATCH_ACTION.ORDER_CHANGED: {
@@ -164,11 +175,6 @@ function App() {
           ></ProjectGrid>
         }
         {localStorageWebsite && <iframe src={localStorageWebsite} className="external-site" title="Import data" width="100%" height="500px"></iframe>}
-        {/* <ProjectTable
-          dispatch={dispatch}
-          weekLength={state.weekLength}
-          projectData={state.projectData}
-        ></ProjectTable> */}
         <PlainTextData projectData={state.projectData} />
       </Container>
     </>

@@ -1,5 +1,6 @@
 import { DISPATCH_ACTION } from "../util/const"
 import { formatAllDuration, formatDuration } from "../util/format"
+import "./Duration.css"
 
 const createDurationNodes = (e: string, i: number, lst: string[]) => <span key={i} className={`time ${e === "00" ? "irrelevant" : ""} ${i < lst.length - 1 ? "sep" : ""}`}>{e}</span>
 

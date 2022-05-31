@@ -160,5 +160,14 @@ code {
 .external-site {
   margin-top: 20px;
 }
+.footer {
+    margin: auto;
+    text-align: center;
+    line-height: 24px;
+    font-size: 12px;
+}
+.footer a {
+    color: gray;
+}
 
-/*# sourceMappingURL=main.0cdfde27.css.map*/
+/*# sourceMappingURL=main.dbfe7d59.css.map*/

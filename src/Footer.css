@@ -1,0 +1,9 @@
+.footer {
+    margin: auto;
+    text-align: center;
+    line-height: 24px;
+    font-size: 12px;
+}
+.footer a {
+    color: gray;
+}

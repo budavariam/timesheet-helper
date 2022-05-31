@@ -11,6 +11,7 @@ import { manipulateData, processProjectData } from './util/projectData';
 import { DEFAULT_ADJUSTMENT, DISPATCH_ACTION } from './util/const';
 import { PlainTextData } from './project/PlainTextData';
 import { Header } from './Header';
+import { Footer } from './Footer';
 
 export function handleProjectLoaded(start: string, rawData: ProjectResponse, weekLength: number, rounding: number) {
   const dateFrom = start
@@ -176,6 +177,7 @@ function App() {
         }
         {localStorageWebsite && <iframe src={localStorageWebsite} className="external-site" title="Import data" width="100%" height="500px"></iframe>}
         <PlainTextData projectData={state.projectData} />
+        <Footer />
       </Container>
     </>
   )

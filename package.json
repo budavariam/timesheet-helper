@@ -39,8 +39,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public -o build/docs -- --preview-url=/timesheet-helper/docs/iframe.html"
   },
   "eslintConfig": {
     "extends": [
@@ -87,5 +88,8 @@
     "babel-plugin-named-exports-order": "0.0.2",
     "prop-types": "^15.8.1",
     "webpack": "^5.72.1"
+  },
+  "optionalDependencies": {
+    "source-map-explorer": "^2.5.2"
   }
 }

@@ -164,11 +164,6 @@ function App() {
           ></ProjectGrid>
         }
         {localStorageWebsite && <iframe src={localStorageWebsite} className="external-site" title="Import data" width="100%" height="500px"></iframe>}
-        {/* <ProjectTable
-          dispatch={dispatch}
-          weekLength={state.weekLength}
-          projectData={state.projectData}
-        ></ProjectTable> */}
         <PlainTextData projectData={state.projectData} />
       </Container>
     </>

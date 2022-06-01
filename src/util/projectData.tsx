@@ -21,11 +21,11 @@ export const generateHeaderColumns = (dates: string[]): ProjectHeader[] => {
             return {
                 Header: date,
                 accessor: (line: any, a: any, b: any, c: any) => {
-                    console.log("XX", line, a, b, c)
+                    // console.log("XX", line, a, b, c)
                     return [line.totals[i], line.adjustments[i]]
                 },
                 Cell: (cell: any) => {
-                    console.log("CELL", cell)
+                    // console.log("CELL", cell)
                     const project = cell.row.original
                     const dispatch = cell.dispatch
                     return (

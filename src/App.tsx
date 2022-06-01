@@ -31,7 +31,7 @@ function reducer(state: any, action: { type: string, value: any, projectID?: str
     console.warn("Empty action")
     return state
   }
-  console.log("X", state, action)
+  // console.log("X", state, action)
   switch (action.type) {
     case DISPATCH_ACTION.PROJECT_LOADED: {
       const { projectData, originalProjectData, projectOrder } = handleProjectLoaded(
@@ -125,7 +125,7 @@ function reducer(state: any, action: { type: string, value: any, projectID?: str
       console.warn("Unknown action", action)
     }
   }
-  console.log(action)
+  // console.log(action)
   return state
 }
 

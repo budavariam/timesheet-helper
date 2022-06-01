@@ -1,4 +1,5 @@
 import "./Footer.css"
+import { DOCS_BASE_PATH } from "./util/const"
 
 export const Footer = () => {
     return (<footer className="footer">
@@ -6,6 +7,6 @@ export const Footer = () => {
         <span>&nbsp;·&nbsp;</span>
         <span><a href="https://budavariam.github.io/">Mátyás&nbsp;Budavári</a></span>
         <span>&nbsp;·&nbsp;</span>
-        <span><a href="/timesheet-helper/docs" rel="noopener noreferrer" target="_blank">Docs</a></span>
+        <span><a href={`${DOCS_BASE_PATH}/timesheet-helper/docs/`} rel="noopener noreferrer" target="_blank">Docs</a></span>
     </footer>)
 }

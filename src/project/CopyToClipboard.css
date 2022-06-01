@@ -17,13 +17,10 @@
   letter-spacing: 0.5px;
   width: 65px;
   border: 1.25px solid #00000000;
-  border-top-left-radius: 0;
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 4px;
+  border-radius: 0 0 0 4px;
   white-space: nowrap;
-  padding: 4px 4px 5px 4px;
-  margin: 0 0 0 1px;
+  padding: 4px;
+  margin: 0;
   cursor: pointer;
   opacity: 0.6;
 }

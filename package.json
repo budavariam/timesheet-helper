@@ -41,7 +41,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
-    "storybook": "start-storybook -p 6006 -s public",
+    "storybook": "start-storybook -p 6006 -s public -- --preview-url=/timesheet-helper/docs/iframe.html",
     "build-storybook": "build-storybook -s public -o build/docs -- --preview-url=/timesheet-helper/docs/iframe.html"
   },
   "eslintConfig": {

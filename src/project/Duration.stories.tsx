@@ -1,4 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
+
 import { Duration } from './Duration';
 
 export default {
@@ -16,7 +18,7 @@ const Template: ComponentStory<typeof Duration> = (args) => <Duration {...args} 
 
 const timeValue = 4 * 3600 * 1000
 const adjustment = 1 * 3600 * 1000
-const dispatch = (action: any) => { console.log("Dispatched", action) }
+const dispatch = action('dispatch-event')
 
 export const APrimary = Template.bind({});
 APrimary.args = {

@@ -14,3 +14,5 @@ export const DISPATCH_ACTION = {
 
 // should not change these
 export const DEFAULT_ADJUSTMENT = 1
+
+export const DOCS_BASE_PATH = process.env.REACT_APP_DOCS_BASE_PATH || ""

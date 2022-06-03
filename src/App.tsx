@@ -1,19 +1,19 @@
 import './App.css';
 import { useReducer } from 'react';
 import moment from 'moment';
-import { ProjectGrid } from "./project/projectGrid";
+import { ProjectGrid } from "./project/ProjectGrid";
 import { enumeratePastMondays } from './util/generateDate';
 import { useProjectFetch } from './api/toggl';
 import { Container } from '@mui/material';
 import { useLocalStorage } from './util/useLocalStorage';
-import { Project, ProjectData, ProjectResponse } from './types';
+import { Project, ProjectData, TogglProjectResponse } from './types';
 import { manipulateData, processProjectData } from './util/projectData';
 import { DEFAULT_ADJUSTMENT, DISPATCH_ACTION } from './util/const';
 import { PlainTextData } from './project/PlainTextData';
 import { Header } from './Header';
 import { Footer } from './Footer';
 
-export function handleProjectLoaded(start: string, rawData: ProjectResponse, weekLength: number, rounding: number) {
+export function handleProjectLoaded(start: string, rawData: TogglProjectResponse, weekLength: number, rounding: number) {
   const dateFrom = start
   const dateTo = moment(start).add(7, 'days').format("YYYY-MM-DD")
   const originalProjectData = processProjectData(rawData, dateFrom, dateTo)

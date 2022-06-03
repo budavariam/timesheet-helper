@@ -3,6 +3,7 @@ import { manipulateData } from '../util/projectData';
 import { PlainTextData } from './PlainTextData';
 import mockData from "../api/data.json"
 import { handleProjectLoaded } from '../App';
+import { TogglProjectResponse } from '../types';
 
 export default {
   title: 'Components/PlainTextData',
@@ -17,7 +18,7 @@ export default {
 
 const Template: ComponentStory<typeof PlainTextData> = (args) => <PlainTextData {...args} />;
 
-const { projectData: projectLoaded } = handleProjectLoaded("2022-02-22", mockData as any, 5, 30)
+const { projectData: projectLoaded } = handleProjectLoaded("2022-02-22", mockData as unknown as TogglProjectResponse, 5, 30)
 const projectData = manipulateData(projectLoaded, 5, 30, {}, {}, [])
 
 export const Primary = Template.bind({});

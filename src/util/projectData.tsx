@@ -1,76 +1,11 @@
-import { Project, ProjectData, ProjectHeader, ProjectResponse } from "../types";
+import { Project, ProjectData, TogglProject, TogglProjectResponse } from "../types";
 import { enumerateDaysBetweenDates, roundToNearestNMinutes } from "./generateDate"
 import { v4 as uuidv4 } from "uuid"
-import { Duration } from "../project/Duration"
 import moment from 'moment';
 import { ROUNDED_ADJUSTMENTS } from "./const";
 
-export const generateHeaderColumns = (dates: string[]): ProjectHeader[] => {
-    const headers = [
-        {
-            Header: "",
-            accessor: "actions",
-            width: 70,
-        },
-        {
-            Header: "Name",
-            accessor: "name",
-            width: 150,
-        },
-        ...dates.map((date: string, i: number) => {
-            return {
-                Header: date,
-                accessor: (line: any, a: any, b: any, c: any) => {
-                    // console.log("XX", line, a, b, c)
-                    return [line.totals[i], line.adjustments[i]]
-                },
-                Cell: (cell: any) => {
-                    // console.log("CELL", cell)
-                    const project = cell.row.original
-                    const dispatch = cell.dispatch
-                    return (
-                        <>
-                            <Duration
-                                num={0}
-                                projectID={project.uuid}
-                                columnIndex={i}
-                                // value={cell.value[0]}
-                                dispatch={dispatch}
-                                adjustable={i !== project.totals.length - 1}
-                                adjusted={project.adjustments[i] || 0}
-                                showEmpty={i === project.totals.length - 1}
-                            />
-                            {
-                                (i === project.totals.length - 1) &&
-                                <span className="ignored">
-                                    &nbsp; (<Duration
-                                        projectID=""
-                                        columnIndex={0}
-                                        num={0}
-                                        adjusted={0}
-                                        // value={project.adjustments[i]}
-                                        dispatch={dispatch}
-                                        adjustable={false}
-                                        showEmpty={true}
-                                        hideInfo={true}
-                                    />)
-                                </span>
-                            }
-                        </>)
-                },
-                Footer: () => { return 13 }
-            }
-        },
-            {
-                Header: "Totals",
-                accessor: "totals"
-            })
-    ]
-    return headers
-}
-
-export function processProjectData(response: ProjectResponse, dateFrom: string, dateTo: string): ProjectData {
-    const projects: Project[] = response.data.map((project: any): Project => {
+export function processProjectData(response: TogglProjectResponse, dateFrom: string, dateTo: string): ProjectData {
+    const projects: Project[] = response.data.map((project: TogglProject): Project => {
         return {
             uuid: uuidv4(),
             client: project.title.client || "-",
@@ -94,7 +29,7 @@ export function processProjectData(response: ProjectResponse, dateFrom: string, 
     }
 }
 
-const filterByWeekLength = (weekLength: number) => (e: any, i: number) => {
+const filterByWeekLength = (weekLength: number) => (_e: unknown, i: number) => {
     return !(weekLength === 5 && (i === 5 || i === 6))
 }
 

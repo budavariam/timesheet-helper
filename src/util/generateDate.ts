@@ -1,10 +1,6 @@
-import moment from "moment";
+import moment, { Moment } from "moment";
 
-export function pastMondays(start: string) {
-    return []
-}
-
-export const enumerateDaysBetweenDates = function (startDate: any, endDate: any) {
+export const enumerateDaysBetweenDates = function (startDate: Moment, endDate: Moment) {
     const now = startDate.clone()
     const dates = []
     let i = 0
@@ -18,8 +14,8 @@ export const enumerateDaysBetweenDates = function (startDate: any, endDate: any)
     return dates
 };
 
-export const enumeratePastMondays = function (startDate: any, count: number = 10) {
-    const now = moment(startDate).clone().day(1)
+export const enumeratePastMondays = function (startDate: Moment, count: number = 10) {
+    const now = startDate.clone().day(1)
     const dates = []
     let i = 0
 

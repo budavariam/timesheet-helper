@@ -2,6 +2,7 @@ import { Project, ProjectData, TogglProject, TogglProjectResponse } from "../typ
 import { enumerateDaysBetweenDates, roundToNearestNMinutes } from "./generateDate"
 import { v4 as uuidv4 } from "uuid"
 import moment from 'moment';
+import { Map, Set } from "immutable"
 import { ROUNDED_ADJUSTMENTS } from "./const";
 
 export function processProjectData(response: TogglProjectResponse, dateFrom: string, dateTo: string): ProjectData {
@@ -33,7 +34,7 @@ const filterByWeekLength = (weekLength: number) => (_e: unknown, i: number) => {
     return !(weekLength === 5 && (i === 5 || i === 6))
 }
 
-export function manipulateData(project: ProjectData, weekLength: number, rounding: number, adjustments: any, ignoreProjects: any, projectOrder: string[] = []): ProjectData {
+export function manipulateData(project: ProjectData, weekLength: number, rounding: number, adjustments: Map<string,number>, ignoreProjects: Set<string>, projectOrder: string[] = []): ProjectData {
     const filterFn = filterByWeekLength(weekLength)
     const roundFn = roundToNearestNMinutes(rounding)
     const sortFn = projectOrder.length
@@ -44,7 +45,7 @@ export function manipulateData(project: ProjectData, weekLength: number, roundin
     const dailyTotalAdjustments = Array(7).fill(0)
 
     project.projects.forEach((project) => {
-        const shouldIgnore = project.uuid in ignoreProjects
+        const shouldIgnore = ignoreProjects.has(project.uuid)
         const proj = {
             ...project,
             ignore: shouldIgnore,
@@ -57,8 +58,8 @@ export function manipulateData(project: ProjectData, weekLength: number, roundin
             let item = value
 
             const adjustmentKey = `${proj.uuid}-${i}`
-            if (adjustmentKey in adjustments) {
-                const adj = adjustments[adjustmentKey]
+            if (adjustments.has(adjustmentKey)) {
+                const adj = adjustments.get(adjustmentKey) || 0
                 adjustmentValues[i] = adj
                 item += adj
                 if (!shouldIgnore) {

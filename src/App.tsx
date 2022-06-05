@@ -2,6 +2,7 @@ import './App.css';
 import { useReducer } from 'react';
 import moment from 'moment';
 import { ProjectGrid } from "./project/ProjectGrid";
+import { Map, Set } from "immutable";
 import { enumeratePastMondays } from './util/generateDate';
 import { useProjectFetch } from './api/toggl';
 import { Container } from '@mui/material';
@@ -18,7 +19,7 @@ export function handleProjectLoaded(start: string, rawData: TogglProjectResponse
   const dateTo = moment(start).add(7, 'days').format("YYYY-MM-DD")
   const originalProjectData = processProjectData(rawData, dateFrom, dateTo)
   const projectOrder = originalProjectData.projects.map(e => e.uuid)
-  const projectData = manipulateData(originalProjectData, weekLength, rounding, {}, {}, projectOrder)
+  const projectData = manipulateData(originalProjectData, weekLength, rounding, Map<string, number>(), Set<string>(), projectOrder)
   return {
     projectData,
     originalProjectData,
@@ -37,7 +38,14 @@ function reducer(state: any, action: { type: string, value: any, projectID?: str
       const { projectData, originalProjectData, projectOrder } = handleProjectLoaded(
         state.start, action.value, state.weekLength, state.rounding
       )
-      return { ...state, projectData, originalProjectData, adjustments: {}, ignoreProjects: {}, projectOrder }
+      return {
+        ...state,
+        projectData,
+        originalProjectData,
+        adjustments: Map<string, number>(),
+        ignoreProjects: Set<string>(),
+        projectOrder
+      }
     }
     case DISPATCH_ACTION.ORDER_CHANGED: {
       const uuid = action.value
@@ -82,18 +90,10 @@ function reducer(state: any, action: { type: string, value: any, projectID?: str
       if (!proj) {
         return state
       }
-      let ignoreProjects = {} as any
-      if (proj.uuid in state.ignoreProjects) {
-        ignoreProjects = {
-          ...state.ignoreProjects,
-        }
-        delete ignoreProjects[proj.uuid]
-      } else {
-        ignoreProjects = {
-          ...state.ignoreProjects,
-          [proj.uuid]: true,
-        }
-      }
+      const ignoreProjects = (state.ignoreProjects.has(proj.uuid))
+        ? state.ignoreProjects.remove(proj.uuid)
+        : state.ignoreProjects.add(proj.uuid)
+
       return {
         ...state,
         ignoreProjects,
@@ -106,14 +106,14 @@ function reducer(state: any, action: { type: string, value: any, projectID?: str
       if (!projectID) {
         return state
       }
-      const adjustments = { ...state.adjustments }
       const adjustmentKey = `${projectID}-${columnIndex}`
-      if (!(adjustmentKey in adjustments)) {
-        // add default colindex value if missing
-        adjustments[adjustmentKey] = 0
-      }
-      // adjust data
-      adjustments[adjustmentKey] += (action.value as number) * ((state.rounding || DEFAULT_ADJUSTMENT) * 60 * 1000)
+      const adjustments = state.adjustments.set(adjustmentKey,
+        (state.adjustments.get(adjustmentKey) || 0)
+        // original value
+        +
+        (action.value as number) * ((state.rounding || DEFAULT_ADJUSTMENT) * 60 * 1000)
+        // adjust data
+      )
 
       return {
         ...state,
@@ -135,14 +135,14 @@ function App() {
     start: moment().day(1).format("YYYY-MM-DD"),
     weekLength: 5,
     rounding: 30,
-    adjustments: {},
+    adjustments: Map<string, number>(),
     projectOrder: {},
     projectData: {
       projects: [],
       totals: [],
       headers: [],
-      adjustments: [],
-      ignoreProjects: {},
+      adjustments: Map<string, number>(),
+      ignoreProjects: Set<string>(),
       totalAdjustments: [],
     } as ProjectData
   })

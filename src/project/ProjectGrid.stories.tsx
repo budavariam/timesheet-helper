@@ -5,6 +5,7 @@ import mockData from "../api/data.json"
 import { handleProjectLoaded } from '../App';
 import { action } from '@storybook/addon-actions';
 import { TogglProjectResponse } from '../types';
+import { Map, Set } from 'immutable';
 
 export default {
   title: 'Components/ProjectGrid',
@@ -21,7 +22,7 @@ const Template: ComponentStory<typeof ProjectGrid> = (args) => <ProjectGrid {...
 
 const dispatch = action('dispatch-event')
 const { projectData: projectLoaded } = handleProjectLoaded("2022-02-22", mockData as unknown as TogglProjectResponse, 7, 30)
-const projectData = manipulateData(projectLoaded, 5, 30, {}, {}, [])
+const projectData = manipulateData(projectLoaded, 5, 30, Map<string, number>(), Set<string>(), [])
 
 export const Primary = Template.bind({});
 Primary.args = {

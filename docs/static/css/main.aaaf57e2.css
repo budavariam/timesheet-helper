@@ -34,13 +34,10 @@ code {
   letter-spacing: 0.5px;
   width: 65px;
   border: 1.25px solid #00000000;
-  border-top-left-radius: 0;
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 4px;
+  border-radius: 0 0 0 4px;
   white-space: nowrap;
-  padding: 4px 4px 5px 4px;
-  margin: 0 0 0 1px;
+  padding: 4px;
+  margin: 0;
   cursor: pointer;
   opacity: 0.6;
 }
@@ -116,58 +113,5 @@ code {
     overflow: auto;
     height: 200px;
 }
-.App {
-  text-align: center;
-}
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@-webkit-keyframes App-logo-spin {
-  from {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-  }
-  to {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-  }
-}
-
-@keyframes App-logo-spin {
-  from {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-  }
-  to {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-  }
-}
-
-.external-site {
-  margin-top: 20px;
-}
-.footer {
-    margin: auto;
-    text-align: center;
-    line-height: 24px;
-    font-size: 12px;
-}
-.footer a {
-    color: gray;
-}
-
-/*# sourceMappingURL=main.dbfe7d59.css.map*/
+/*# sourceMappingURL=main.aaaf57e2.css.map*/

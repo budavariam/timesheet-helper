@@ -2,7 +2,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { manipulateData } from '../util/projectData';
 import { PlainTextData } from './PlainTextData';
 import mockData from "../api/data.json"
-import { handleProjectLoaded } from '../App';
+import { handleProjectLoaded } from '../actions/root.reducer';
 import { TogglProjectResponse } from '../types';
 import { Map, Set } from "immutable";
 

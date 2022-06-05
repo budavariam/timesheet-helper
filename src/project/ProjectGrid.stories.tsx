@@ -2,11 +2,12 @@ import { action } from '@storybook/addon-actions';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Map, Set } from 'immutable';
 
+import { TogglProjectResponse } from '../types';
+import mockData from "../api/data.json"
+
 import { manipulateData } from '../util/projectData';
 import { ProjectGrid } from './ProjectGrid';
 import { handleProjectLoaded } from '../actions/root.reducer';;
-import { TogglProjectResponse } from '../types';
-import mockData from "../api/data.json"
 
 export default {
   title: 'Components/ProjectGrid',

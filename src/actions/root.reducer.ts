@@ -17,7 +17,7 @@ export function handleProjectLoaded(start: string, rawData: TogglProjectResponse
     }
 }
 
-export function rootReducer(state: RootState, action: { type: string, value: any, projectID?: string, columnIndex?: number }) {
+export function rootReducer(state: RootState, action: { type: string, value: string | number | TogglProjectResponse, projectID?: string, columnIndex?: number }) {
     if (!action || !action.type) {
         console.warn("Empty action")
         return state
@@ -25,8 +25,9 @@ export function rootReducer(state: RootState, action: { type: string, value: any
     // console.log("X", state, action)
     switch (action.type) {
         case DISPATCH_ACTION.PROJECT_LOADED: {
+            const projectResponse = action.value as TogglProjectResponse
             const { projectData, originalProjectData, projectOrder } = handleProjectLoaded(
-                state.start, action.value, state.weekLength, state.rounding
+                state.start, projectResponse, state.weekLength, state.rounding
             )
             return {
                 ...state,
@@ -38,7 +39,7 @@ export function rootReducer(state: RootState, action: { type: string, value: any
             }
         }
         case DISPATCH_ACTION.ORDER_CHANGED: {
-            const uuid = action.value
+            const uuid = action.value as string
             const currIndex = state.projectOrder.indexOf(uuid);
             if (currIndex === 0) {
                 return state
@@ -75,7 +76,7 @@ export function rootReducer(state: RootState, action: { type: string, value: any
             }
         }
         case DISPATCH_ACTION.IGNORE_PROJECT_TOGGLE: {
-            const projectID = action.value || ""
+            const projectID = action.value as string || ""
             const proj = state.projectData.projects.filter((e: Project) => e.uuid === projectID)[0]
             if (!proj) {
                 return state

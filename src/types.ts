@@ -37,7 +37,7 @@ export type RootState = {
 
 export type RootAction = {
     type: string;
-    value: any;
+    value: string | number | TogglProjectResponse;
     projectID?: string | undefined;
     columnIndex?: number | undefined;
 }

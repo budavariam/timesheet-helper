@@ -2,7 +2,7 @@ import moment from "moment"
 import React, { useEffect } from "react"
 import useFetch, { Res } from "use-http"
 import { DISPATCH_ACTION } from "../util/const"
-import { ProjectResponse, RootAction } from "../types"
+import { ProjectResponse, RootAction, TogglProjectResponse } from "../types"
 import mockData from "./data.json";
 
 const DEV_DATA = process.env.REACT_APP_DEV_DATA ?? false // during development I don't want to spam the API
@@ -35,7 +35,10 @@ export const useProjectFetch = (dateFrom: string, apiToken: string, workspaceId:
 
     useEffect(() => {
         if (DEV_DATA || !workspaceId || !apiToken) {
-            dispatch({ type: DISPATCH_ACTION.PROJECT_LOADED, value: mockData })
+            dispatch({
+                type: DISPATCH_ACTION.PROJECT_LOADED,
+                value: mockData as unknown as TogglProjectResponse
+            })
         } else {
             loadProjects(get, response, dispatch, workspaceId, dateFrom)
         }

@@ -1,4 +1,4 @@
-import { Project, TogglProjectResponse } from '../types';
+import { Project, RootState, TogglProjectResponse } from '../types';
 import { manipulateData, processProjectData } from '../util/projectData';
 import { DEFAULT_ADJUSTMENT, DISPATCH_ACTION } from '../util/const';
 import moment from 'moment';
@@ -17,7 +17,7 @@ export function handleProjectLoaded(start: string, rawData: TogglProjectResponse
     }
 }
 
-export function rootReducer(state: any, action: { type: string, value: any, projectID?: string, columnIndex?: number }) {
+export function rootReducer(state: RootState, action: { type: string, value: any, projectID?: string, columnIndex?: number }) {
     if (!action || !action.type) {
         console.warn("Empty action")
         return state
@@ -75,7 +75,7 @@ export function rootReducer(state: any, action: { type: string, value: any, proj
             }
         }
         case DISPATCH_ACTION.IGNORE_PROJECT_TOGGLE: {
-            const projectID = action.projectID || ""
+            const projectID = action.value || ""
             const proj = state.projectData.projects.filter((e: Project) => e.uuid === projectID)[0]
             if (!proj) {
                 return state

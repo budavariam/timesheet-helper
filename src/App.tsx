@@ -10,16 +10,17 @@ import { useLocalStorage } from './util/useLocalStorage';
 import { PlainTextData } from './project/PlainTextData';
 import { Header } from './Header';
 import { Footer } from './Footer';
-import { ProjectData } from './types';
+import { ProjectData, RootReducer } from './types';
 import { rootReducer } from './actions/root.reducer';
 
 function App() {
-  const [state, dispatch] = useReducer(rootReducer, {}, () => ({
+  const [state, dispatch] = useReducer<RootReducer>(rootReducer, {
     start: moment().day(1).format("YYYY-MM-DD"),
     weekLength: 5,
     rounding: 30,
     adjustments: Map<string, number>(),
-    projectOrder: {},
+    ignoreProjects: Set<string>(),
+    projectOrder: [],
     projectData: {
       projects: [],
       totals: [],
@@ -27,8 +28,16 @@ function App() {
       adjustments: Map<string, number>(),
       ignoreProjects: Set<string>(),
       totalAdjustments: [],
+    } as ProjectData,
+    originalProjectData: {
+      projects: [],
+      totals: [],
+      headers: [],
+      adjustments: Map<string, number>(),
+      ignoreProjects: Set<string>(),
+      totalAdjustments: [],
     } as ProjectData
-  }))
+  })
 
   const [localStorageKey, setKey] = useLocalStorage("key", "");
   const [localStorageWid, setWid] = useLocalStorage("wid", "");

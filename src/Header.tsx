@@ -1,14 +1,15 @@
+import React from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { Card, Grid, TextField } from '@mui/material';
 import { DISPATCH_ACTION } from './util/const';
-import React from 'react';
+import { RootAction, RootState } from './types';
 
 type HeaderProps = {
-    state: any,
-    dispatch: React.Dispatch<any>,
+    state: RootState,
+    dispatch: React.Dispatch<RootAction>,
     dateSelection: string[],
     localStorageKey: string,
     setKey: React.Dispatch<any>,

@@ -1,3 +1,5 @@
+import { Map, Set } from "immutable"
+
 /** Data of a single project */
 export type Project = { uuid: string, client: string, project: string, hexColor: string, totals: number[], adjustments: number[], ignore: boolean }
 /** Full grid data */
@@ -19,3 +21,25 @@ export type TogglProjectResponse = {
 }
 
 export type ProjectData = { projects: Project[], totals: number[], totalAdjustments: number[], headers: string[] }
+
+// root state
+
+export type RootState = {
+  start: string,
+  weekLength: number,
+  rounding: number,
+  adjustments: Map<string, number>,
+  projectOrder: string[],
+  projectData: ProjectData,
+  originalProjectData: ProjectData,
+  ignoreProjects: Set<string>,
+}
+
+export type RootAction = {
+    type: string;
+    value: any;
+    projectID?: string | undefined;
+    columnIndex?: number | undefined;
+}
+
+export type RootReducer = (state: RootState, action: RootAction) => RootState

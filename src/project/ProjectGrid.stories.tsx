@@ -7,7 +7,7 @@ import mockData from "../api/data.json"
 
 import { manipulateData } from '../util/projectData';
 import { ProjectGrid } from './ProjectGrid';
-import { handleProjectLoaded } from '../actions/root.reducer';;
+import { handleProjectLoaded } from '../actions/root.reducer';
 
 export default {
   title: 'Components/ProjectGrid',

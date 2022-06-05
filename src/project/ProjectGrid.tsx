@@ -6,7 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Project, ProjectData } from '../types';
+import { Project, ProjectData, RootAction } from '../types';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 // import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
@@ -31,7 +31,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 type ProjectGridProps = {
   projectData: ProjectData,
-  dispatch: React.Dispatch<any>,
+  dispatch: React.Dispatch<RootAction>,
 }
 
 export function ProjectGrid(props: ProjectGridProps) {
@@ -56,7 +56,7 @@ export function ProjectGrid(props: ProjectGridProps) {
             >
               <TableCell component="th" scope="row">
                 <span className="ignoreProject" onClick={() => {
-                  dispatch({ type: DISPATCH_ACTION.IGNORE_PROJECT_TOGGLE, projectID: project.uuid })
+                  dispatch({ type: DISPATCH_ACTION.IGNORE_PROJECT_TOGGLE , value: project.uuid })
                 }}>{project.ignore
                   ? <VisibilityOffOutlinedIcon />
                   : <VisibilityOutlinedIcon />

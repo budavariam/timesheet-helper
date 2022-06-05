@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-function getStorageValue(key: any, defaultValue: any) {
+function getStorageValue(key: string, defaultValue: string) {
     try {
         const saved = localStorage.getItem(key) || "";
         const initial = JSON.parse(saved);
@@ -10,7 +10,7 @@ function getStorageValue(key: any, defaultValue: any) {
     }
 }
 
-export const useLocalStorage = (key: any, defaultValue: any) => {
+export const useLocalStorage = (key: string, defaultValue: string) => {
     // https://blog.logrocket.com/using-localstorage-react-hooks/
     const [value, setValue] = useState(() => {
         return getStorageValue(key, defaultValue);

@@ -2,12 +2,12 @@ import moment from "moment"
 import React, { useEffect } from "react"
 import useFetch, { Res } from "use-http"
 import { DISPATCH_ACTION } from "../util/const"
-import { ProjectResponse } from "../types"
+import { ProjectResponse, RootAction, TogglProjectResponse } from "../types"
 import mockData from "./data.json";
 
 const DEV_DATA = process.env.REACT_APP_DEV_DATA ?? false // during development I don't want to spam the API
 
-async function loadProjects(get: Function, response: Res<ProjectResponse>, dispatch: React.Dispatch<any>, workspaceId: string, dateFrom: string) {
+async function loadProjects(get: Function, response: Res<ProjectResponse>, dispatch: React.Dispatch<RootAction>, workspaceId: string, dateFrom: string) {
     const dateTo = moment(dateFrom).add(7, 'days').format("YYYY-MM-DD")
     const projects = await get(`/weekly?workspace_id=${workspaceId}&since=${dateFrom}&until=${dateTo}&user_agent=api_test`)
     if (response.ok) {
@@ -17,7 +17,7 @@ async function loadProjects(get: Function, response: Res<ProjectResponse>, dispa
     }
 }
 
-export const useProjectFetch = (dateFrom: string, apiToken: string, workspaceId: string, dispatch: React.Dispatch<any>): [loading: boolean, error: Error | undefined, project: ProjectResponse] => {
+export const useProjectFetch = (dateFrom: string, apiToken: string, workspaceId: string, dispatch: React.Dispatch<RootAction>): [loading: boolean, error: Error | undefined, project: ProjectResponse] => {
     const {
         loading,
         get,
@@ -35,7 +35,10 @@ export const useProjectFetch = (dateFrom: string, apiToken: string, workspaceId:
 
     useEffect(() => {
         if (DEV_DATA || !workspaceId || !apiToken) {
-            dispatch({ type: DISPATCH_ACTION.PROJECT_LOADED, value: mockData })
+            dispatch({
+                type: DISPATCH_ACTION.PROJECT_LOADED,
+                value: mockData as unknown as TogglProjectResponse
+            })
         } else {
             loadProjects(get, response, dispatch, workspaceId, dateFrom)
         }

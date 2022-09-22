@@ -17,6 +17,7 @@ function App() {
   const [state, dispatch] = useReducer<RootReducer>(rootReducer, {
     start: moment().day(1).format("YYYY-MM-DD"),
     weekLength: 5,
+    hideIgnored: false,
     rounding: 30,
     adjustments: Map<string, number>(),
     ignoreProjects: Set<string>(),
@@ -64,6 +65,7 @@ function App() {
         {
           state?.projectData && <ProjectGrid
             dispatch={dispatch}
+            hideIgnored={state.hideIgnored}
             projectData={state.projectData}
           ></ProjectGrid>
         }

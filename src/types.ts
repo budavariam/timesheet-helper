@@ -20,7 +20,12 @@ export type TogglProjectResponse = {
   week_totals: number[]
 }
 
-export type ProjectData = { projects: Project[], totals: number[], totalAdjustments: number[], headers: string[] }
+export type ProjectData = {
+  projects: Project[],
+  totals: number[],
+  totalAdjustments: number[],
+  headers: string[],
+}
 
 // root state
 
@@ -28,6 +33,7 @@ export type RootState = {
   start: string,
   weekLength: number,
   rounding: number,
+  hideIgnored: boolean,
   adjustments: Map<string, number>,
   projectOrder: string[],
   projectData: ProjectData,
@@ -36,10 +42,10 @@ export type RootState = {
 }
 
 export type RootAction = {
-    type: string;
-    value: string | number | TogglProjectResponse;
-    projectID?: string | undefined;
-    columnIndex?: number | undefined;
+  type: string;
+  value: string | number | TogglProjectResponse;
+  projectID?: string | undefined;
+  columnIndex?: number | undefined;
 }
 
 export type RootReducer = (state: RootState, action: RootAction) => RootState

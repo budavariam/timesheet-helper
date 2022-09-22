@@ -1,0 +1,3 @@
+.hide-ignored tr.ignored {
+    display: none;
+}

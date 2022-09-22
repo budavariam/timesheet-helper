@@ -113,5 +113,8 @@ code {
     overflow: auto;
     height: 200px;
 }
+.hide-ignored tr.ignored {
+    display: none;
+}
 
-/*# sourceMappingURL=main.aaaf57e2.css.map*/
+/*# sourceMappingURL=main.bc97efc5.css.map*/

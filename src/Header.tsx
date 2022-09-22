@@ -82,7 +82,7 @@ export const Header = (props: HeaderProps) => {
                             <TextField
                                 id="apikey"
                                 value={localStorageKey}
-                                label="API Key"
+                                label="Toggl API Key"
                                 variant="standard"
                                 type="password"
                                 onChange={(e) => {
@@ -96,7 +96,7 @@ export const Header = (props: HeaderProps) => {
                             <TextField
                                 id="workspaceid"
                                 value={localStorageWid}
-                                label="Workspace ID"
+                                label="Toggl Workspace ID"
                                 variant="standard"
                                 type="password"
                                 onChange={(e) => {
@@ -110,7 +110,7 @@ export const Header = (props: HeaderProps) => {
                             <TextField
                                 id="website"
                                 value={localStorageWebsite}
-                                label="Website"
+                                label="Website URL"
                                 variant="standard"
                                 type="text"
                                 onChange={(e) => {

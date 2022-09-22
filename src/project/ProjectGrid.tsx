@@ -9,9 +9,12 @@ import Paper from '@mui/material/Paper';
 import { Project, ProjectData, RootAction } from '../types';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 // import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import { Duration } from './Duration';
 import { DISPATCH_ACTION } from '../util/const';
+import "./ProjectGrid.css"
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}:last-child, &.${tableCellClasses.body}:last-child`]: {
@@ -31,18 +34,30 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 type ProjectGridProps = {
   projectData: ProjectData,
+  hideIgnored: boolean,
   dispatch: React.Dispatch<RootAction>,
 }
 
 export function ProjectGrid(props: ProjectGridProps) {
-  const { projectData, dispatch } = props
-
+  const { projectData, hideIgnored, dispatch } = props
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} size="small" aria-label="simple table">
+      <Table sx={{ minWidth: 650 }} size="small" aria-label="simple table" className={`${hideIgnored ? "hide-ignored" : ""}`}>
         <TableHead>
           <TableRow>
-            <StyledTableCell></StyledTableCell>
+            <StyledTableCell>
+              <span
+                className="ignoreProject"
+                title={hideIgnored ? "Show hidden" : "Only show visible"}
+                onClick={() => {
+                  dispatch({ type: DISPATCH_ACTION.HIDE_IGNORED_TOGGLE, value: "" })
+                }}
+              >{hideIgnored
+                ? <VisibilityIcon />
+                : <VisibilityOffIcon />
+                }
+              </span>
+            </StyledTableCell>
             <StyledTableCell>Name</StyledTableCell>
             {projectData.headers.map((day, i) => <StyledTableCell key={i} align="center">{day}</StyledTableCell>)}
           </TableRow>
@@ -56,7 +71,7 @@ export function ProjectGrid(props: ProjectGridProps) {
             >
               <TableCell component="th" scope="row">
                 <span className="ignoreProject" onClick={() => {
-                  dispatch({ type: DISPATCH_ACTION.IGNORE_PROJECT_TOGGLE , value: project.uuid })
+                  dispatch({ type: DISPATCH_ACTION.IGNORE_PROJECT_TOGGLE, value: project.uuid })
                 }}>{project.ignore
                   ? <VisibilityOffOutlinedIcon />
                   : <VisibilityOutlinedIcon />
@@ -126,6 +141,6 @@ export function ProjectGrid(props: ProjectGridProps) {
           </StyledTableRow>
         </TableBody>
       </Table>
-    </TableContainer>
+    </TableContainer >
   );
 }

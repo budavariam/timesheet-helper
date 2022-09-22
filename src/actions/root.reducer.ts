@@ -35,6 +35,7 @@ export function rootReducer(state: RootState, action: RootAction) {
                 originalProjectData,
                 adjustments: Map<string, number>(),
                 ignoreProjects: Set<string>(),
+                hideIgnore: false,
                 projectOrder
             }
         }
@@ -89,6 +90,12 @@ export function rootReducer(state: RootState, action: RootAction) {
                 ...state,
                 ignoreProjects,
                 projectData: manipulateData(state.originalProjectData, state.weekLength, state.rounding, state.adjustments, ignoreProjects, state.projectOrder)
+            }
+        }
+        case DISPATCH_ACTION.HIDE_IGNORED_TOGGLE: {
+            return {
+                ...state,
+                hideIgnored: !state.hideIgnored,
             }
         }
         case DISPATCH_ACTION.ADJUST: {

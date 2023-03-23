@@ -27,7 +27,7 @@ function App() {
     rounding: 30,
     adjustments: Map<string, number>(),
     ignoreProjects: Set<string>(),
-    autoIgnoreProjects: Set<string>(),
+    autoIgnore: Set<string>(),
     projectOrder: [],
     projectData: {
       projects: [],
@@ -46,15 +46,15 @@ function App() {
       totalAdjustments: [],
     } as ProjectData
   }, (state: RootState) => {
-    let autoIgnoreProjects = state.autoIgnoreProjects
+    let autoIgnore = state.autoIgnore
     const extendedList = localStorageIgnore.split(",").map((e: string) => e.trim()).filter((e: string) => e)
     for (const item of extendedList) {
-      autoIgnoreProjects = autoIgnoreProjects.add(item)
+      autoIgnore = autoIgnore.add(item)
     }
     debugger
     return {
       ...state,
-      autoIgnoreProjects: autoIgnoreProjects,
+      autoIgnore: autoIgnore,
     }
   })
 
@@ -101,13 +101,13 @@ function App() {
                 dispatch({
                   type: DISPATCH_ACTION.REPLACE_IGNORED,
                   value: "",
-                  autoIgnoreProjects: ignoreProjects.split(",").map(e => e.trim())
+                  autoIgnore: ignoreProjects.split(",").map(e => e.trim())
                 })
               }}
             />
           </FormControl>
         </Grid>
-        {state.autoIgnoreProjects.toString()}
+        {state.autoIgnore.toString()}
         <Footer />
       </Container>
     </>

@@ -4,12 +4,12 @@ import { DEFAULT_ADJUSTMENT, DISPATCH_ACTION } from '../util/const';
 import moment from 'moment';
 import { Map, Set } from "immutable";
 
-export function handleProjectLoaded(start: string, rawData: TogglProjectResponse, weekLength: number, rounding: number, autoIgnoreProjects: Set<string>) {
+export function handleProjectLoaded(start: string, rawData: TogglProjectResponse, weekLength: number, rounding: number, autoIgnore: Set<string>) {
     const dateFrom = start
     const dateTo = moment(start).add(7, 'days').format("YYYY-MM-DD")
     const originalProjectData = processProjectData(rawData, dateFrom, dateTo)
     const projectOrder = originalProjectData.projects.map(e => e.uuid)
-    const projectData = manipulateData(originalProjectData, weekLength, rounding, Map<string, number>(), Set<string>(), autoIgnoreProjects, projectOrder)
+    const projectData = manipulateData(originalProjectData, weekLength, rounding, Map<string, number>(), Set<string>(), autoIgnore, projectOrder)
     return {
         projectData,
         originalProjectData,
@@ -27,7 +27,7 @@ export function rootReducer(state: RootState, action: RootAction) {
         case DISPATCH_ACTION.PROJECT_LOADED: {
             const projectResponse = action.value as TogglProjectResponse
             const { projectData, originalProjectData, projectOrder } = handleProjectLoaded(
-                state.start, projectResponse, state.weekLength, state.rounding, state.autoIgnoreProjects
+                state.start, projectResponse, state.weekLength, state.rounding, state.autoIgnore
             )
             return {
                 ...state,
@@ -54,7 +54,7 @@ export function rootReducer(state: RootState, action: RootAction) {
             return {
                 ...state,
                 projectOrder: newOrder,
-                projectData: manipulateData(state.originalProjectData, state.weekLength, state.rounding, state.adjustments, state.ignoreProjects, state.autoIgnoreProjects, newOrder),
+                projectData: manipulateData(state.originalProjectData, state.weekLength, state.rounding, state.adjustments, state.ignoreProjects, state.autoIgnore, newOrder),
             }
         }
         case DISPATCH_ACTION.WEEK_LENGTH_CHANGED: {
@@ -62,7 +62,7 @@ export function rootReducer(state: RootState, action: RootAction) {
             return {
                 ...state,
                 weekLength,
-                projectData: manipulateData(state.originalProjectData, weekLength, state.rounding, state.adjustments, state.ignoreProjects, state.autoIgnoreProjects, state.projectOrder),
+                projectData: manipulateData(state.originalProjectData, weekLength, state.rounding, state.adjustments, state.ignoreProjects, state.autoIgnore, state.projectOrder),
             }
         }
         case DISPATCH_ACTION.START_CHANGED: {
@@ -73,7 +73,7 @@ export function rootReducer(state: RootState, action: RootAction) {
             return {
                 ...state,
                 rounding,
-                projectData: manipulateData(state.originalProjectData, state.weekLength, rounding, state.adjustments, state.ignoreProjects, state.autoIgnoreProjects, state.projectOrder),
+                projectData: manipulateData(state.originalProjectData, state.weekLength, rounding, state.adjustments, state.ignoreProjects, state.autoIgnore, state.projectOrder),
             }
         }
         case DISPATCH_ACTION.IGNORE_PROJECT_TOGGLE: {
@@ -89,7 +89,7 @@ export function rootReducer(state: RootState, action: RootAction) {
             return {
                 ...state,
                 ignoreProjects,
-                projectData: manipulateData(state.originalProjectData, state.weekLength, state.rounding, state.adjustments, ignoreProjects, state.autoIgnoreProjects, state.projectOrder)
+                projectData: manipulateData(state.originalProjectData, state.weekLength, state.rounding, state.adjustments, ignoreProjects, state.autoIgnore, state.projectOrder)
             }
         }
         case DISPATCH_ACTION.HIDE_IGNORED_TOGGLE: {
@@ -116,23 +116,23 @@ export function rootReducer(state: RootState, action: RootAction) {
             return {
                 ...state,
                 adjustments,
-                projectData: manipulateData(state.originalProjectData, state.weekLength, state.rounding, adjustments, state.ignoreProjects, state.autoIgnoreProjects, state.projectOrder),
+                projectData: manipulateData(state.originalProjectData, state.weekLength, state.rounding, adjustments, state.ignoreProjects, state.autoIgnore, state.projectOrder),
             }
         }
         case DISPATCH_ACTION.REPLACE_IGNORED: {
-            let autoIgnoreProjects = Set<string>([])
-            if (!action.autoIgnoreProjects) {
+            let autoIgnore = Set<string>([])
+            if (!action.autoIgnore) {
                 return state
             }
-            for (let item of action.autoIgnoreProjects) {
-                autoIgnoreProjects = autoIgnoreProjects.add(item)
+            for (let item of action.autoIgnore) {
+                autoIgnore = autoIgnore.add(item)
             }
-            autoIgnoreProjects = autoIgnoreProjects.remove("")
+            autoIgnore = autoIgnore.remove("")
             debugger
             return {
                 ...state,
-                autoIgnoreProjects: autoIgnoreProjects,
-                projectData: manipulateData(state.originalProjectData, state.weekLength, state.rounding, state.adjustments, state.ignoreProjects, autoIgnoreProjects, state.projectOrder)
+                autoIgnore: autoIgnore,
+                projectData: manipulateData(state.originalProjectData, state.weekLength, state.rounding, state.adjustments, state.ignoreProjects, autoIgnore, state.projectOrder)
             }
         }
         default: {

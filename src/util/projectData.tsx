@@ -34,7 +34,7 @@ const filterByWeekLength = (weekLength: number) => (_e: unknown, i: number) => {
     return !(weekLength === 5 && (i === 5 || i === 6))
 }
 
-export function manipulateData(project: ProjectData, weekLength: number, rounding: number, adjustments: Map<string,number>, ignoreProjects: Set<string>, projectOrder: string[] = []): ProjectData {
+export function manipulateData(project: ProjectData, weekLength: number, rounding: number, adjustments: Map<string, number>, ignoreProjects: Set<string>, autoIgnoreProjects: Set<string>, projectOrder: string[] = []): ProjectData {
     const filterFn = filterByWeekLength(weekLength)
     const roundFn = roundToNearestNMinutes(rounding)
     const sortFn = projectOrder.length
@@ -45,7 +45,7 @@ export function manipulateData(project: ProjectData, weekLength: number, roundin
     const dailyTotalAdjustments = Array(7).fill(0)
 
     project.projects.forEach((project) => {
-        const shouldIgnore = ignoreProjects.has(project.uuid)
+        const shouldIgnore = ignoreProjects.has(project.uuid) || autoIgnoreProjects.has(project.client)
         const proj = {
             ...project,
             ignore: shouldIgnore,

@@ -23,9 +23,9 @@ export default {
 const Template: ComponentStory<typeof ProjectGrid> = (args) => <ProjectGrid {...args} />;
 
 const dispatch = action('dispatch-event')
-const { projectData: projectLoaded } = handleProjectLoaded("2022-02-22", mockData as unknown as TogglProjectResponse, 7, 30)
+const { projectData: projectLoaded } = handleProjectLoaded("2022-02-22", mockData as unknown as TogglProjectResponse, 7, 30, Set<string>())
 const hideIgnored = false
-const projectData = manipulateData(projectLoaded, 5, 30, Map<string, number>(), Set<string>(), [])
+const projectData = manipulateData(projectLoaded, 5, 30, Map<string, number>(), Set<string>(), Set<string>(), [])
 
 export const Primary = Template.bind({});
 Primary.args = {

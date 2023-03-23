@@ -26,3 +26,4 @@
   - [ ] do not mutate data in the manipulateData fn
 - [ ] add tests for tricky cases
   - if I adjust a value e.g 0:43 to 0:46 it should be rounded to 1:00
+- [x] auto ignore task

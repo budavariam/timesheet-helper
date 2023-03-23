@@ -19,8 +19,8 @@ export default {
 
 const Template: ComponentStory<typeof PlainTextData> = (args) => <PlainTextData {...args} />;
 
-const { projectData: projectLoaded } = handleProjectLoaded("2022-02-22", mockData as unknown as TogglProjectResponse, 5, 30)
-const projectData = manipulateData(projectLoaded, 5, 30, Map<string, number>(), Set<string>(), [])
+const { projectData: projectLoaded } = handleProjectLoaded("2022-02-22", mockData as unknown as TogglProjectResponse, 5, 30, Set<string>())
+const projectData = manipulateData(projectLoaded, 5, 30, Map<string, number>(), Set<string>(), Set<string>(), [])
 
 export const Primary = Template.bind({});
 Primary.args = {

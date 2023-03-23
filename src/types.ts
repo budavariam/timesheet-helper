@@ -39,6 +39,7 @@ export type RootState = {
   projectData: ProjectData,
   originalProjectData: ProjectData,
   ignoreProjects: Set<string>,
+  autoIgnoreProjects: Set<string>,
 }
 
 export type RootAction = {
@@ -46,6 +47,7 @@ export type RootAction = {
   value: string | number | TogglProjectResponse;
   projectID?: string | undefined;
   columnIndex?: number | undefined;
+  autoIgnoreProjects?: string[] | undefined;
 }
 
 export type RootReducer = (state: RootState, action: RootAction) => RootState

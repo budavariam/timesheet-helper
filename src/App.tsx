@@ -107,7 +107,6 @@ function App() {
             />
           </FormControl>
         </Grid>
-        {state.autoIgnore.toString()}
         <Footer />
       </Container>
     </>
